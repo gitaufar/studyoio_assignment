@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTutorStore } from '../store/tutorStore';
+import { InputField } from './InputField';
+import { SelectField } from './SelectField';
 import type { Tutor } from '../types';
 
 interface TutorFormProps {
@@ -11,20 +13,20 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
   const { addTutor, updateTutor, loading } = useTutorStore();
   const [formData, setFormData] = useState({
     name: '',
-    subject: '',
     email: '',
-    phone: '',
-    bio: '',
+    subject: '',
+    hourlyRate: 0,
+    status: 'active' as 'active' | 'inactive',
   });
 
   useEffect(() => {
     if (tutor) {
       setFormData({
         name: tutor.name,
-        subject: tutor.subject,
         email: tutor.email,
-        phone: tutor.phone,
-        bio: tutor.bio || '',
+        subject: tutor.subject,
+        hourlyRate: tutor.hourlyRate,
+        status: tutor.status,
       });
     }
   }, [tutor]);
@@ -43,79 +45,87 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: name === 'hourlyRate' ? Number(value) : value,
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="tutor-form">
-      <h2>{tutor ? 'Edit Tutor' : 'Tambah Tutor'}</h2>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+        {tutor ? 'Edit Tutor' : 'Tambah Tutor'}
+      </h2>
       
-      <div>
-        <label htmlFor="name">Nama:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <InputField
+        type="text"
+        id="name"
+        name="name"
+        label="Name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Enter tutor name"
+        required
+      />
 
-      <div>
-        <label htmlFor="subject">Mata Pelajaran:</label>
-        <input
-          type="text"
-          id="subject"
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <InputField
+        type="email"
+        id="email"
+        name="email"
+        label="Email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="tutor@example.com"
+        required
+      />
 
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <InputField
+        type="text"
+        id="subject"
+        name="subject"
+        label="Subject"
+        value={formData.subject}
+        onChange={handleChange}
+        placeholder="e.g. Mathematics, Physics"
+        required
+      />
 
-      <div>
-        <label htmlFor="phone">Telepon:</label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <InputField
+        type="number"
+        id="hourlyRate"
+        name="hourlyRate"
+        label="Hourly Rate (Rp)"
+        value={formData.hourlyRate}
+        onChange={handleChange}
+        min="0"
+        step="1000"
+        placeholder="e.g. 100000"
+        required
+      />
 
-      <div>
-        <label htmlFor="bio">Bio:</label>
-        <textarea
-          id="bio"
-          name="bio"
-          value={formData.bio}
-          onChange={handleChange}
-          rows={4}
-        />
-      </div>
+      <SelectField
+        id="status"
+        name="status"
+        label="Status"
+        value={formData.status}
+        onChange={handleChange}
+        required
+      >
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </SelectField>
 
-      <button type="submit" disabled={loading}>
-        {loading ? 'Menyimpan...' : 'Simpan'}
-      </button>
+      <div className="flex justify-end gap-3 pt-4">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+        >
+          {loading ? 'Menyimpan...' : 'Simpan'}
+        </button>
+      </div>
     </form>
   );
 };

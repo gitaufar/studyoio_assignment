@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useBookingStore } from '../store/bookingStore';
+import { useTutorStore } from '../../tutors/store/tutorStore';
 import type { Booking } from '../types';
 
 interface BookingFormProps {
@@ -9,6 +10,7 @@ interface BookingFormProps {
 
 export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) => {
   const { addBooking, updateBooking, loading } = useBookingStore();
+  const { tutors, fetchTutors } = useTutorStore();
   const [formData, setFormData] = useState<Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>>({
     studentName: '',
     tutorName: '',
@@ -19,6 +21,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
     status: 'pending',
     notes: '',
   });
+
+  // Fetch tutors when component mounts
+  useEffect(() => {
+    fetchTutors();
+  }, [fetchTutors]);
 
   useEffect(() => {
     if (booking) {
@@ -61,12 +68,12 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
         {booking ? 'Edit Booking' : 'Tambah Booking'}
       </h2>
       
       <div>
-        <label htmlFor="studentName" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="studentName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Nama Siswa:
         </label>
         <input
@@ -75,28 +82,37 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           name="studentName"
           value={formData.studentName}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          placeholder="Enter student name"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="tutorName" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="tutorName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Nama Tutor:
         </label>
-        <input
-          type="text"
+        <select
           id="tutorName"
           name="tutorName"
           value={formData.tutorName}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           required
-        />
+        >
+          <option value="">-- Select Tutor --</option>
+          {tutors
+            .filter(tutor => tutor.status === 'active')
+            .map((tutor) => (
+              <option key={tutor.id} value={tutor.name}>
+                {tutor.name} - {tutor.subject}
+              </option>
+            ))}
+        </select>
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Mata Pelajaran:
         </label>
         <input
@@ -105,14 +121,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           name="subject"
           value={formData.subject}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          placeholder="e.g. Mathematics, Physics"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           required
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Tanggal:
           </label>
           <input
@@ -121,13 +138,13 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             required
           />
         </div>
 
         <div>
-          <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="time" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Waktu:
           </label>
           <input
@@ -136,7 +153,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
             name="time"
             value={formData.time}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             required
           />
         </div>
@@ -144,7 +161,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="duration" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Durasi (menit):
           </label>
           <input
@@ -155,13 +172,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
             onChange={handleChange}
             min="30"
             step="30"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="e.g. 60, 90"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             required
           />
         </div>
 
         <div>
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Status:
           </label>
           <select
@@ -169,7 +187,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             required
           >
             <option value="pending">Pending</option>
@@ -181,7 +199,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Catatan:
         </label>
         <textarea
@@ -190,7 +208,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           value={formData.notes}
           onChange={handleChange}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+          placeholder="Additional notes (optional)"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
         />
       </div>
 

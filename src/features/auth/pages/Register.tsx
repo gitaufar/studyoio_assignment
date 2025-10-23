@@ -49,10 +49,10 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-light px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-light dark:bg-dark px-4 py-8">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border dark:border-dark-border">
           {/* Logo & Title */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary rounded-full mb-4">
@@ -60,14 +60,14 @@ export const Register: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">Buat Akun</h1>
-            <p className="text-gray-600 mt-2">Daftar untuk mengakses Admin Panel</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Buat Akun</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Daftar untuk mengakses Admin Panel</p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email
               </label>
               <input
@@ -77,13 +77,13 @@ export const Register: React.FC = () => {
                 placeholder="nama@example.com"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <input
@@ -93,14 +93,14 @@ export const Register: React.FC = () => {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">Minimal 6 karakter</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimal 6 karakter</p>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Konfirmasi Password
               </label>
               <input
@@ -110,14 +110,14 @@ export const Register: React.FC = () => {
                 placeholder="••••••••"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 required
               />
             </div>
 
             {/* Error Message */}
             {(validationError || error) && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
                 {validationError || error}
               </div>
             )}
@@ -144,7 +144,7 @@ export const Register: React.FC = () => {
 
           {/* Login Link */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
               Sudah punya akun?{' '}
               <Link to="/login" className="text-secondary font-semibold hover:text-blue-700 transition-colors">
                 Login di sini
@@ -154,7 +154,7 @@ export const Register: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-gray-500 text-sm mt-6">
+        <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
           © 2025 StudyOIO. All rights reserved.
         </p>
       </div>

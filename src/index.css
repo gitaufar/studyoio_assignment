@@ -5,10 +5,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,5 +16,7 @@
   --color-secondary: #2196F3;
   --color-light: #F9FAFB;
   --color-dark: #121212;
+  --color-dark-card: #1E1E1E;
+  --color-dark-border: #2D2D2D;
   --text-5\.5xl: 3.25rem;
 }

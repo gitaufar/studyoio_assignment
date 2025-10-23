@@ -1,12 +1,10 @@
 export interface Tutor {
   id: string;
   name: string;
-  subject: string;
   email: string;
-  phone: string;
-  bio?: string;
-  rating?: number;
-  photoURL?: string;
+  subject: string;
+  hourlyRate: number;
+  status: 'active' | 'inactive';
   createdAt?: Date;
   updatedAt?: Date;
 }
