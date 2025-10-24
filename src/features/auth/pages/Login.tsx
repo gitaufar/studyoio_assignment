@@ -34,7 +34,7 @@ export const Login: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border dark:border-dark-border">
           <AuthLogo 
-            title="StudyOIO" 
+            title="Studyo.IO" 
             subtitle="Admin Panel" 
             iconColor="primary"
           />

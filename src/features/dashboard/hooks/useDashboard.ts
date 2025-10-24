@@ -11,6 +11,7 @@ export const useDashboard = () => {
     scheduledBookings: 0,
     completedBookings: 0,
     cancelledBookings: 0,
+    upcomingSessions: 0,
   });
   const [weeklyData, setWeeklyData] = useState<WeeklyBookingData[]>([]);
   const [tutorSubjectData, setTutorSubjectData] = useState<TutorBySubjectData[]>([]);

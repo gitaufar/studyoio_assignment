@@ -6,6 +6,7 @@ export interface DashboardStats {
   scheduledBookings: number;
   completedBookings: number;
   cancelledBookings: number;
+  upcomingSessions: number; // Next 3 days
 }
 
 export interface WeeklyBookingData {

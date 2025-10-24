@@ -49,6 +49,9 @@ export const dashboardService = {
         const completedBookings = bookings.filter((b: any) => b.status === 'completed').length;
         const cancelledBookings = bookings.filter((b: any) => b.status === 'cancelled').length;
 
+        // Calculate upcoming sessions (next 3 days)
+        const upcomingSessions = calculateUpcomingSessions(bookings);
+
         onStatsUpdate({
           totalTutors,
           activeTutors,
@@ -57,6 +60,7 @@ export const dashboardService = {
           scheduledBookings,
           completedBookings,
           cancelledBookings,
+          upcomingSessions,
         });
 
         // Calculate weekly booking data (last 7 days)
@@ -124,4 +128,21 @@ function calculateTutorsBySubject(tutors: any[]): TutorBySubjectData[] {
     .sort((a, b) => b.count - a.count); // Sort by count descending
   
   return subjectData;
+}
+
+function calculateUpcomingSessions(bookings: any[]): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const threeDaysLater = new Date(today);
+  threeDaysLater.setDate(threeDaysLater.getDate() + 3);
+  
+  const upcomingCount = bookings.filter((booking: any) => {
+    if (booking.status !== 'scheduled' || !booking.date) return false;
+    
+    const bookingDate = new Date(booking.date + 'T00:00:00');
+    return bookingDate >= today && bookingDate <= threeDaysLater;
+  }).length;
+  
+  return upcomingCount;
 }

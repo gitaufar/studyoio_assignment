@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { DashboardStats } from '../types';
 import { StatCard } from './StatCard';
 
@@ -7,6 +8,8 @@ interface StatsCardsProps {
 }
 
 export const StatsCards: React.FC<StatsCardsProps> = ({ stats }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {/* Total Tutors */}
@@ -50,14 +53,22 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ stats }) => {
         iconColor="text-secondary"
       />
 
-      {/* Scheduled Sessions */}
+      {/* Upcoming Sessions (Next 3 Days) */}
       <StatCard
-        title="Scheduled Sessions"
-        value={stats.scheduledBookings}
+        title="Upcoming Sessions"
+        value={stats.upcomingSessions}
         subtitle={
-          <span className="text-blue-600 dark:text-blue-400">
-            Upcoming sessions
-          </span>
+          <div className="flex items-center w-full justify-between">
+            <span className="text-blue-600 dark:text-blue-400">
+              Next 3 days
+            </span>
+            <button
+              onClick={() => navigate('/bookings?range=next3d')}
+              className="text-xs text-primary hover:text-green-700 dark:hover:text-green-400 font-semibold transition-colors"
+            >
+              View All →
+            </button>
+          </div>
         }
         icon={
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
