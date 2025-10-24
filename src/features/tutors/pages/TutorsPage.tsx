@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTutorStore } from '../store/tutorStore';
 import { TutorForm } from '../components/TutorForm';
@@ -7,16 +7,15 @@ import { Modal, Table } from '../../../shared/components';
 
 export const TutorsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { tutors, loading, fetchTutors, deleteTutor } = useTutorStore();
+  // Remove fetchTutors - data now comes from real-time subscription in App.tsx
+  const { tutors, loading, deleteTutor } = useTutorStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTutor, setSelectedTutor] = useState<Tutor | undefined>();
   
   const searchQuery = searchParams.get('search') || '';
   const statusFilter = (searchParams.get('status') || 'all') as 'all' | 'active' | 'inactive';
 
-  useEffect(() => {
-    fetchTutors();
-  }, [fetchTutors]);
+  // No need to fetch - data is already syncing via useFirebaseSync in App.tsx
 
   const handleEdit = (tutor: Tutor) => {
     setSelectedTutor(tutor);
@@ -157,7 +156,7 @@ export const TutorsPage: React.FC = () => {
           tutor={selectedTutor}
           onSuccess={() => {
             setIsModalOpen(false);
-            fetchTutors();
+            // No need to manually fetch - real-time sync handles it
           }}
         />
       </Modal>

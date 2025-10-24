@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -18,5 +18,8 @@
   --color-dark: #121212;
   --color-dark-card: #1E1E1E;
   --color-dark-border: #2D2D2D;
+  
+  /* Font family tokens */
+  --font-sans: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
 }
 @custom-variant dark (&:where(.dark, .dark *));

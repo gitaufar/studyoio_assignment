@@ -10,13 +10,51 @@ import {
   query,
   where,
   orderBy,
+  onSnapshot,
 } from 'firebase/firestore';
+import type { Unsubscribe } from 'firebase/firestore';
 import type { Booking } from '../types';
 import { db } from '../../../shared/services/firebase';
 
 const COLLECTION_NAME = 'bookings';
 
 export const bookingService = {
+  /**
+   * Subscribe to real-time updates for all bookings
+   * Data is automatically cached in IndexedDB by Firestore
+   * Works offline - will use cached data when network is unavailable
+   */
+  subscribeToBookings: (
+    onUpdate: (bookings: Booking[]) => void,
+    onError?: (error: Error) => void
+  ): Unsubscribe => {
+    const q = query(collection(db, COLLECTION_NAME), orderBy('date', 'desc'));
+    
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const bookings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Booking[];
+        
+        // Check if data came from cache or server
+        const source = snapshot.metadata.fromCache ? 'cache' : 'server';
+        console.log(`📅 Bookings loaded from ${source} (${bookings.length} bookings)`);
+        
+        onUpdate(bookings);
+      },
+      (error) => {
+        console.error('❌ Error subscribing to bookings:', error);
+        if (onError) onError(error as Error);
+      }
+    );
+  },
+
+  /**
+   * Get all bookings (one-time fetch)
+   * For initial loads only - prefer subscribeToBookings for real-time updates
+   */
   getAll: async (): Promise<Booking[]> => {
     const q = query(collection(db, COLLECTION_NAME), orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);

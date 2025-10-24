@@ -1,22 +1,81 @@
 import { create } from 'zustand';
 import { bookingService } from '../services/bookingService';
 import type { Booking } from '../types';
+import type { Unsubscribe } from 'firebase/firestore';
 
 interface BookingStore {
   bookings: Booking[];
   loading: boolean;
   error: string | null;
+  isSubscribed: boolean;
+  unsubscribe: Unsubscribe | null;
+  
+  subscribeBookings: () => void;
+  unsubscribeBookings: () => void;
   fetchBookings: () => Promise<void>;
   addBooking: (booking: Omit<Booking, 'id'>) => Promise<void>;
   updateBooking: (id: string, booking: Partial<Booking>) => Promise<void>;
   deleteBooking: (id: string) => Promise<void>;
 }
 
-export const useBookingStore = create<BookingStore>((set) => ({
+export const useBookingStore = create<BookingStore>((set, get) => ({
   bookings: [],
-  loading: false,
+  loading: true, // Start as loading
   error: null,
+  isSubscribed: false,
+  unsubscribe: null,
 
+  /**
+   * Subscribe to real-time booking updates
+   * Data automatically syncs from Firestore's IndexedDB cache
+   */
+  subscribeBookings: () => {
+    const state = get();
+    
+    // Prevent duplicate subscriptions
+    if (state.isSubscribed || state.unsubscribe) {
+      console.warn('⚠️ Already subscribed to bookings');
+      return;
+    }
+
+    console.log('🔄 Subscribing to bookings real-time updates...');
+    
+    const unsubscribe = bookingService.subscribeToBookings(
+      (bookings) => {
+        set({ 
+          bookings, 
+          loading: false, 
+          error: null,
+          isSubscribed: true 
+        });
+      },
+      (error) => {
+        set({ 
+          error: error.message, 
+          loading: false 
+        });
+      }
+    );
+
+    set({ unsubscribe, isSubscribed: true });
+  },
+
+  /**
+   * Unsubscribe from real-time updates
+   */
+  unsubscribeBookings: () => {
+    const state = get();
+    if (state.unsubscribe) {
+      console.log('🛑 Unsubscribing from bookings');
+      state.unsubscribe();
+      set({ unsubscribe: null, isSubscribed: false });
+    }
+  },
+
+  /**
+   * Legacy fetch method (for one-time loads)
+   * Prefer subscribeBookings for real-time updates
+   */
   fetchBookings: async () => {
     set({ loading: true, error: null });
     try {

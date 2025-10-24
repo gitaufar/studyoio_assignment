@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useBookingStore } from '../store/bookingStore';
 import { 
@@ -12,16 +12,15 @@ import { Modal } from '../../../shared/components';
 
 export const BookingsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { bookings, loading, fetchBookings, deleteBooking } = useBookingStore();
+  // Remove fetchBookings - data now comes from real-time subscription in App.tsx
+  const { bookings, loading, deleteBooking } = useBookingStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | undefined>();
 
   const rangeFilter = searchParams.get('range');
   const statusFilter = (searchParams.get('status') || 'all') as 'all' | 'scheduled' | 'completed' | 'cancelled';
 
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
+  // No need to fetch - data is already syncing via useFirebaseSync in App.tsx
 
   const filteredBookings = useMemo(() => {
     let result = bookings;
@@ -100,7 +99,7 @@ export const BookingsPage: React.FC = () => {
           booking={selectedBooking}
           onSuccess={() => {
             setIsModalOpen(false);
-            fetchBookings();
+            // No need to manually fetch - real-time sync handles it
           }}
         />
       </Modal>

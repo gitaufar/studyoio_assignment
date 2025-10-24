@@ -7,13 +7,52 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  onSnapshot,
+  query,
 } from 'firebase/firestore';
+import type { Unsubscribe } from 'firebase/firestore';
 import type { Tutor } from '../types';
 import { db } from '../../../shared/services/firebase';
 
 const COLLECTION_NAME = 'tutors';
 
 export const tutorService = {
+  /**
+   * Subscribe to real-time updates for all tutors
+   * Data is automatically cached in IndexedDB by Firestore
+   * Works offline - will use cached data when network is unavailable
+   */
+  subscribeToTutors: (
+    onUpdate: (tutors: Tutor[]) => void,
+    onError?: (error: Error) => void
+  ): Unsubscribe => {
+    const q = query(collection(db, COLLECTION_NAME));
+    
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const tutors = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Tutor[];
+        
+        // Check if data came from cache or server
+        const source = snapshot.metadata.fromCache ? 'cache' : 'server';
+        console.log(`📚 Tutors loaded from ${source} (${tutors.length} tutors)`);
+        
+        onUpdate(tutors);
+      },
+      (error) => {
+        console.error('❌ Error subscribing to tutors:', error);
+        if (onError) onError(error as Error);
+      }
+    );
+  },
+
+  /**
+   * Get all tutors (one-time fetch)
+   * For initial loads only - prefer subscribeToTutors for real-time updates
+   */
   getAll: async (): Promise<Tutor[]> => {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
     return querySnapshot.docs.map((doc) => ({

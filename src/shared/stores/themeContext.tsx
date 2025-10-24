@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { localStorageService } from '../utils/localStorage';
 
 type Theme = 'light' | 'dark';
 
@@ -11,13 +12,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Cek localStorage untuk saved theme
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'light';
+    // Load saved theme from localStorage
+    return localStorageService.getTheme();
   });
 
   useEffect(() => {
-    // Apply theme ke document root
+    // Apply theme to document root
     const root = document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');
@@ -25,7 +25,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       root.classList.remove('dark');
     }
     // Save to localStorage
-    localStorage.setItem('theme', theme);
+    localStorageService.setTheme(theme);
   }, [theme]);
 
   const toggleTheme = () => {
