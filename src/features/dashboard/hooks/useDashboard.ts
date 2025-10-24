@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { dashboardService } from '../services/dashboardService';
-import type { DashboardStats } from '../types';
+import type { DashboardStats, WeeklyBookingData, TutorBySubjectData } from '../types';
 
 export const useDashboard = () => {
   const [stats, setStats] = useState<DashboardStats>({
@@ -12,6 +12,8 @@ export const useDashboard = () => {
     completedBookings: 0,
     cancelledBookings: 0,
   });
+  const [weeklyData, setWeeklyData] = useState<WeeklyBookingData[]>([]);
+  const [tutorSubjectData, setTutorSubjectData] = useState<TutorBySubjectData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,10 +22,18 @@ export const useDashboard = () => {
     setError(null);
 
     // Subscribe to real-time updates
-    const unsubscribe = dashboardService.subscribeToStats((newStats) => {
-      setStats(newStats);
-      setLoading(false);
-    });
+    const unsubscribe = dashboardService.subscribeToStats(
+      (newStats) => {
+        setStats(newStats);
+        setLoading(false);
+      },
+      (newWeeklyData) => {
+        setWeeklyData(newWeeklyData);
+      },
+      (newTutorSubjectData) => {
+        setTutorSubjectData(newTutorSubjectData);
+      }
+    );
 
     // Cleanup subscription on unmount
     return () => {
@@ -33,6 +43,8 @@ export const useDashboard = () => {
 
   return {
     stats,
+    weeklyData,
+    tutorSubjectData,
     loading,
     error,
   };

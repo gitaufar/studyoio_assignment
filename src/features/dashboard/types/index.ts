@@ -7,3 +7,16 @@ export interface DashboardStats {
   completedBookings: number;
   cancelledBookings: number;
 }
+
+export interface WeeklyBookingData {
+  day: string;
+  scheduled: number;
+  completed: number;
+  cancelled: number;
+}
+
+export interface TutorBySubjectData {
+  subject: string;
+  count: number;
+  fill: string;
+}
