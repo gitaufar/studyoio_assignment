@@ -56,10 +56,25 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
+    
+    // Update form data
+    const newFormData = {
       ...formData,
       [name]: value,
-    });
+    };
+
+    // Auto-calculate status when date or endTime changes
+    if ((name === 'date' || name === 'endTime') && newFormData.date && newFormData.endTime) {
+      const bookingDateTime = new Date(`${newFormData.date}T${newFormData.endTime}`);
+      const now = new Date();
+      
+      // Auto-set status based on date/time, but only if not manually changed to 'cancelled'
+      if (formData.status !== 'cancelled') {
+        newFormData.status = bookingDateTime > now ? 'scheduled' : 'completed';
+      }
+    }
+
+    setFormData(newFormData);
   };
 
   return (
@@ -170,6 +185,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           <option value="completed">Completed</option>
           <option value="cancelled">Cancelled</option>
         </select>
+        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          Auto-filled based on date/time, but you can change it manually
+        </p>
       </div>
 
       <div className="flex justify-end gap-3 pt-4">
