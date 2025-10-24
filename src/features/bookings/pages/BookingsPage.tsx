@@ -11,13 +11,13 @@ import type { Booking } from '../types';
 import { Modal } from '../../../shared/components';
 
 export const BookingsPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { bookings, loading, fetchBookings, deleteBooking } = useBookingStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | undefined>();
-  const [statusFilter, setStatusFilter] = useState<'all' | 'scheduled' | 'completed' | 'cancelled'>('all');
 
-  const rangeFilter = searchParams.get('range'); // Get 'range' query param
+  const rangeFilter = searchParams.get('range');
+  const statusFilter = (searchParams.get('status') || 'all') as 'all' | 'scheduled' | 'completed' | 'cancelled';
 
   useEffect(() => {
     fetchBookings();
@@ -66,13 +66,25 @@ export const BookingsPage: React.FC = () => {
     }
   };
 
+  const handleStatusFilterChange = (newStatus: 'all' | 'scheduled' | 'completed' | 'cancelled') => {
+    const params = new URLSearchParams(searchParams);
+    
+    if (newStatus === 'all') {
+      params.delete('status');
+    } else {
+      params.set('status', newStatus);
+    }
+    
+    setSearchParams(params);
+  };
+
   return (
     <div>
       <BookingsHeader onAddBooking={handleAdd} />
       
       <BookingsFilter 
         statusFilter={statusFilter}
-        onFilterChange={setStatusFilter}
+        onFilterChange={handleStatusFilterChange}
         resultCount={filteredBookings.length}
       />
       

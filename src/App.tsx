@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserProvider } from './shared/stores/userContext';
 import { ThemeProvider } from './shared/stores/themeContext';
