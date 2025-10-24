@@ -11,6 +11,7 @@ export const getAuthErrorMessage = (error: any): string => {
     
     // Register errors
     'auth/email-already-in-use': 'This email is already in use. Please log in or use another email.',
+    'auth/weak-password': 'Password is too weak. Use at least 6 characters.',
     
     // Network errors
     'auth/network-request-failed': 'Network error. Please check your internet connection.',

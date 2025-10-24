@@ -76,8 +76,8 @@ export const Login: React.FC = () => {
           </form>
 
           <AuthFooterLink
-            text="Belum punya akun?"
-            linkText="Daftar di sini"
+            text="Don't have an account?"
+            linkText="Register here"
             linkTo="/register"
             linkColor="primary"
           />

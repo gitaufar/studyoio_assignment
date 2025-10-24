@@ -27,7 +27,7 @@ export const Register: React.FC = () => {
 
     // Validasi password
     if (formData.password.length < 6) {
-      setValidationError('Password must be at least 6 characters long');
+      setValidationError('Password must be at least 6 characters');
       return;
     }
 
@@ -61,8 +61,8 @@ export const Register: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border dark:border-dark-border">
           <AuthLogo 
-            title="Buat Akun" 
-            subtitle="Daftar untuk mengakses Admin Panel" 
+            title="Create Account" 
+            subtitle="Register to access Admin Panel" 
             iconColor="secondary"
           />
 
@@ -87,14 +87,14 @@ export const Register: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              helperText="Minimal 6 karakter"
+              helperText="Minimum 6 characters"
               focusColor="secondary"
             />
 
             <PasswordInput
               id="confirmPassword"
               name="confirmPassword"
-              label="Konfirmasi Password"
+              label="Confirm Password"
               placeholder="••••••••"
               value={formData.confirmPassword}
               onChange={handleChange}
@@ -112,13 +112,13 @@ export const Register: React.FC = () => {
               loading={loading}
               variant="secondary"
             >
-              Daftar
+              Register
             </AuthButton>
           </form>
 
           <AuthFooterLink
-            text="Sudah punya akun?"
-            linkText="Login di sini"
+            text="Already have an account?"
+            linkText="Login here"
             linkTo="/login"
             linkColor="secondary"
           />
