@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import type { Credential } from '../types';
+import {
+  AuthLogo,
+  AuthInput,
+  PasswordInput,
+  ErrorAlert,
+  AuthButton,
+  AuthFooterLink,
+} from '../components';
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -19,12 +27,12 @@ export const Register: React.FC = () => {
 
     // Validasi password
     if (formData.password.length < 6) {
-      setValidationError('Password minimal 6 karakter');
+      setValidationError('Password must be at least 6 characters long');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setValidationError('Password tidak cocok');
+      setValidationError('Passwords do not match');
       return;
     }
 
@@ -51,109 +59,71 @@ export const Register: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-light dark:bg-dark px-4 py-8">
       <div className="w-full max-w-md">
-        {/* Card */}
         <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border dark:border-dark-border">
-          {/* Logo & Title */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary rounded-full mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-              </svg>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Buat Akun</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Daftar untuk mengakses Admin Panel</p>
-          </div>
+          <AuthLogo 
+            title="Buat Akun" 
+            subtitle="Daftar untuk mengakses Admin Panel" 
+            iconColor="secondary"
+          />
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="nama@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-                required
-              />
-            </div>
+            <AuthInput
+              id="email"
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="nama@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              focusColor="secondary"
+            />
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-                required
-              />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimal 6 karakter</p>
-            </div>
+            <PasswordInput
+              id="password"
+              name="password"
+              label="Password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              helperText="Minimal 6 karakter"
+              focusColor="secondary"
+            />
 
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Konfirmasi Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-                required
-              />
-            </div>
+            <PasswordInput
+              id="confirmPassword"
+              name="confirmPassword"
+              label="Konfirmasi Password"
+              placeholder="••••••••"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              focusColor="secondary"
+            />
 
-            {/* Error Message */}
             {(validationError || error) && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
-                {validationError || error}
-              </div>
+              <ErrorAlert message={validationError || error} />
             )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-secondary text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            <AuthButton 
+              type="submit" 
+              disabled={loading} 
+              loading={loading}
+              variant="secondary"
             >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Loading...
-                </span>
-              ) : (
-                'Daftar'
-              )}
-            </button>
+              Daftar
+            </AuthButton>
           </form>
 
-          {/* Login Link */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Sudah punya akun?{' '}
-              <Link to="/login" className="text-secondary font-semibold hover:text-blue-700 transition-colors">
-                Login di sini
-              </Link>
-            </p>
-          </div>
+          <AuthFooterLink
+            text="Sudah punya akun?"
+            linkText="Login di sini"
+            linkTo="/login"
+            linkColor="secondary"
+          />
         </div>
 
-        {/* Footer */}
         <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
           © 2025 StudyOIO. All rights reserved.
         </p>

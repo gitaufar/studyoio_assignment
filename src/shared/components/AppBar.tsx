@@ -1,15 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../stores/userContext';
 import { useTheme } from '../stores/themeContext';
+import { signOut } from 'firebase/auth';
+import { auth } from '../services/firebase';
 
 interface AppBarProps {
   onMenuClick?: () => void;
 }
 
 export const AppBar: React.FC<AppBarProps> = ({ onMenuClick }) => {
+  const navigate = useNavigate();
   const { user } = useUserContext();
   const { theme, toggleTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <header className="bg-white dark:bg-dark-card shadow-sm border-b border-gray-200 dark:border-dark-border px-6 py-4">
@@ -80,16 +93,31 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick }) => {
               {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg py-1 z-10 border border-gray-200 dark:border-dark-border">
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <button 
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      // Profile action
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
                     Profile
-                  </a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      // Settings action
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
                     Settings
-                  </a>
+                  </button>
                   <hr className="my-1 dark:border-dark-border" />
-                  <a href="/login" className="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20">
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  >
                     Logout
-                  </a>
+                  </button>
                 </div>
               )}
             </div>

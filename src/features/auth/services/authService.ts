@@ -7,6 +7,7 @@ import {
   type User as FirebaseUser,
 } from 'firebase/auth';
 import type { Credential, User } from '../types';
+import { getAuthErrorMessage } from '../utils/errorMessages';
 
 const mapFirebaseUser = (firebaseUser: FirebaseUser): User => ({
   uid: firebaseUser.uid,
@@ -17,25 +18,37 @@ const mapFirebaseUser = (firebaseUser: FirebaseUser): User => ({
 
 export const authService = {
   login: async (credential: Credential): Promise<User> => {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      credential.email,
-      credential.password
-    );
-    return mapFirebaseUser(userCredential.user);
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        credential.email,
+        credential.password
+      );
+      return mapFirebaseUser(userCredential.user);
+    } catch (error) {
+      throw new Error(getAuthErrorMessage(error));
+    }
   },
 
   register: async (credential: Credential): Promise<User> => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      credential.email,
-      credential.password
-    );
-    return mapFirebaseUser(userCredential.user);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        credential.email,
+        credential.password
+      );
+      return mapFirebaseUser(userCredential.user);
+    } catch (error) {
+      throw new Error(getAuthErrorMessage(error));
+    }
   },
 
   logout: async (): Promise<void> => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error) {
+      throw new Error(getAuthErrorMessage(error));
+    }
   },
 
   getCurrentUser: (): User | null => {
