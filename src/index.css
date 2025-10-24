@@ -20,3 +20,4 @@
   --color-dark-border: #2D2D2D;
   --text-5\.5xl: 3.25rem;
 }
+@custom-variant dark (&:where(.dark, .dark *));
