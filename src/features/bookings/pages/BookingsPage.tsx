@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useBookingStore } from '../store/bookingStore';
 import { BookingForm } from '../components/BookingForm';
 import type { Booking } from '../types';
@@ -8,10 +8,17 @@ export const BookingsPage: React.FC = () => {
   const { bookings, loading, fetchBookings, deleteBooking } = useBookingStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | undefined>();
+  const [statusFilter, setStatusFilter] = useState<'all' | 'scheduled' | 'completed' | 'cancelled'>('all');
 
   useEffect(() => {
     fetchBookings();
   }, [fetchBookings]);
+
+  // Filter bookings by status
+  const filteredBookings = useMemo(() => {
+    if (statusFilter === 'all') return bookings;
+    return bookings.filter(booking => booking.status === statusFilter);
+  }, [bookings, statusFilter]);
 
   const handleEdit = (booking: Booking) => {
     setSelectedBooking(booking);
@@ -30,17 +37,17 @@ export const BookingsPage: React.FC = () => {
   };
 
   const columns = [
-    { key: 'studentName', label: 'Nama Siswa' },
     { key: 'tutorName', label: 'Tutor' },
-    { key: 'subject', label: 'Mata Pelajaran' },
-    { key: 'date', label: 'Tanggal' },
+    { key: 'studentName', label: 'Student' },
+    { key: 'date', label: 'Date' },
+    { key: 'startTime', label: 'Start Time' },
+    { key: 'endTime', label: 'End Time' },
     { 
       key: 'status', 
       label: 'Status',
       render: (value: string) => {
         const statusColors: Record<string, string> = {
-          pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-          confirmed: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+          scheduled: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
           completed: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
           cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
         };
@@ -67,6 +74,27 @@ export const BookingsPage: React.FC = () => {
           <span>Tambah Booking</span>
         </button>
       </div>
+
+      {/* Filter by Status */}
+      <div className="mb-6 flex items-center space-x-4">
+        <label htmlFor="statusFilter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Filter by Status:
+        </label>
+        <select
+          id="statusFilter"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+          className="px-4 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-dark text-gray-900 dark:text-white"
+        >
+          <option value="all">All</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <span className="text-sm text-gray-500 dark:text-gray-400">
+          {filteredBookings.length} booking(s) found
+        </span>
+      </div>
       
       {loading ? (
         <div className="flex justify-center items-center py-12">
@@ -74,10 +102,11 @@ export const BookingsPage: React.FC = () => {
         </div>
       ) : (
         <Table
-          data={bookings}
+          data={filteredBookings}
           columns={columns}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          emptyMessage="No bookings yet — click Add Booking."
         />
       )}
 

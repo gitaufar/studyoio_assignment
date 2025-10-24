@@ -12,14 +12,12 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
   const { addBooking, updateBooking, loading } = useBookingStore();
   const { tutors, fetchTutors } = useTutorStore();
   const [formData, setFormData] = useState<Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>>({
-    studentName: '',
     tutorName: '',
-    subject: '',
+    studentName: '',
     date: '',
-    time: '',
-    duration: 60,
-    status: 'pending',
-    notes: '',
+    startTime: '',
+    endTime: '',
+    status: 'scheduled',
   });
 
   // Fetch tutors when component mounts
@@ -30,14 +28,12 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
   useEffect(() => {
     if (booking) {
       setFormData({
-        studentName: booking.studentName,
         tutorName: booking.tutorName,
-        subject: booking.subject,
+        studentName: booking.studentName,
         date: booking.date,
-        time: booking.time,
-        duration: booking.duration,
+        startTime: booking.startTime,
+        endTime: booking.endTime,
         status: booking.status,
-        notes: booking.notes || '',
       });
     }
   }, [booking]);
@@ -57,12 +53,12 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === 'duration' ? Number(value) : value,
+      [name]: value,
     });
   };
 
@@ -72,22 +68,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
         {booking ? 'Edit Booking' : 'Tambah Booking'}
       </h2>
       
-      <div>
-        <label htmlFor="studentName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Nama Siswa:
-        </label>
-        <input
-          type="text"
-          id="studentName"
-          name="studentName"
-          value={formData.studentName}
-          onChange={handleChange}
-          placeholder="Enter student name"
-          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-          required
-        />
-      </div>
-
       <div>
         <label htmlFor="tutorName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Nama Tutor:
@@ -112,16 +92,31 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Mata Pelajaran:
+        <label htmlFor="studentName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Nama Siswa:
         </label>
         <input
           type="text"
-          id="subject"
-          name="subject"
-          value={formData.subject}
+          id="studentName"
+          name="studentName"
+          value={formData.studentName}
           onChange={handleChange}
-          placeholder="e.g. Mathematics, Physics"
+          placeholder="Enter student name"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Tanggal:
+        </label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
           className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           required
         />
@@ -129,88 +124,52 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Tanggal:
-          </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="time" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Waktu:
+          <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Start Time:
           </label>
           <input
             type="time"
-            id="time"
-            name="time"
-            value={formData.time}
+            id="startTime"
+            name="startTime"
+            value={formData.startTime}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             required
           />
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Durasi (menit):
+          <label htmlFor="endTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            End Time:
           </label>
           <input
-            type="number"
-            id="duration"
-            name="duration"
-            value={formData.duration}
+            type="time"
+            id="endTime"
+            name="endTime"
+            value={formData.endTime}
             onChange={handleChange}
-            min="30"
-            step="30"
-            placeholder="e.g. 60, 90"
             className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             required
           />
-        </div>
-
-        <div>
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Status:
-          </label>
-          <select
-            id="status"
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-            required
-          >
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
         </div>
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Catatan:
+        <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Status:
         </label>
-        <textarea
-          id="notes"
-          name="notes"
-          value={formData.notes}
+        <select
+          id="status"
+          name="status"
+          value={formData.status}
           onChange={handleChange}
-          rows={3}
-          placeholder="Additional notes (optional)"
-          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-        />
+          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+          required
+        >
+          <option value="scheduled">Scheduled</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
       </div>
 
       <div className="flex justify-end gap-3 pt-4">

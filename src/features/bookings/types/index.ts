@@ -1,15 +1,11 @@
 export interface Booking {
   id: string;
-  studentName: string;
-  studentId?: string;
   tutorName: string;
-  tutorId?: string;
-  subject: string;
+  studentName: string;
   date: string;
-  time: string;
-  duration: number; // dalam menit
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  notes?: string;
+  startTime: string;
+  endTime: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
   createdAt?: Date;
   updatedAt?: Date;
 }
