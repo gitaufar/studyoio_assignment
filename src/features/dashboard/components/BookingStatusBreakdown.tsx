@@ -7,7 +7,7 @@ interface BookingStatusBreakdownProps {
 
 export const BookingStatusBreakdown: React.FC<BookingStatusBreakdownProps> = ({ stats }) => {
   return (
-    <div className="bg-white dark:bg-dark-card rounded-xl shadow-md p-6 border dark:border-dark-border">
+    <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-6 border border-gray-200 dark:border-dark-border">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Booking Status Breakdown</h2>
       <div className="grid grid-cols-1 gap-4">
         <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">

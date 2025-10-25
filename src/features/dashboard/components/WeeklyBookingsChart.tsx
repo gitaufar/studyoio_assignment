@@ -8,7 +8,7 @@ interface WeeklyBookingsChartProps {
 
 export const WeeklyBookingsChart: React.FC<WeeklyBookingsChartProps> = ({ data }) => {
   return (
-    <div className="mt-8 bg-white dark:bg-dark-card rounded-xl shadow-md p-6 border dark:border-dark-border">
+    <div className="mt-8 bg-white dark:bg-dark-card rounded-xl shadow-sm p-6 border border-gray-200 dark:border-dark-border">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Weekly Bookings (Last 7 Days)</h2>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">

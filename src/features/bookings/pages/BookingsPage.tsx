@@ -148,7 +148,7 @@ export const BookingsPage: React.FC = () => {
       setErrorModal({
         isOpen: true,
         message:
-          "You are currently offline. Please check your internet connection and try again.",
+          "Anda sedang offline. Silakan periksa koneksi internet Anda dan coba lagi.",
         error: "No internet connection",
       });
       return;
@@ -160,13 +160,13 @@ export const BookingsPage: React.FC = () => {
       setConfirmDelete({ isOpen: false, bookingId: "", tutorName: "" });
       setSuccessModal({
         isOpen: true,
-        message: `Booking with ${confirmDelete.tutorName} successfully deleted.`,
+        message: `Booking dengan ${confirmDelete.tutorName} berhasil dihapus.`,
       });
     } catch (error: any) {
       setConfirmDelete({ isOpen: false, bookingId: "", tutorName: "" });
       setErrorModal({
         isOpen: true,
-        message: "Failed to delete booking. Please try again.",
+        message: "Gagal menghapus booking",
         error: error?.message || "Unknown error",
       });
     } finally {
@@ -190,7 +190,7 @@ export const BookingsPage: React.FC = () => {
       setErrorModal({
         isOpen: true,
         message:
-          "You are currently offline. Please check your internet connection and try again.",
+          "Anda sedang offline. Silakan periksa koneksi internet Anda dan coba lagi.",
         error: "No internet connection",
       });
       return;
@@ -208,13 +208,13 @@ export const BookingsPage: React.FC = () => {
       setConfirmBulkDelete({ isOpen: false, ids: [] });
       setSuccessModal({
         isOpen: true,
-        message: `${count} booking${count > 1 ? 's' : ''} successfully deleted.`,
+        message: `${count} booking${count > 1 ? 's' : ''} berhasil dihapus.`,
       });
     } catch (error: any) {
       setConfirmBulkDelete({ isOpen: false, ids: [] });
       setErrorModal({
         isOpen: true,
-        message: "Failed to delete bookings. Please try again.",
+        message: "Gagal menghapus booking. Silakan coba lagi.",
         error: error?.message || "Unknown error",
       });
     } finally {
@@ -246,7 +246,7 @@ export const BookingsPage: React.FC = () => {
         resultCount={filteredBookings.length}
       />
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <BookingsTable
           bookings={paginatedData}
           loading={loading}
@@ -284,9 +284,9 @@ export const BookingsPage: React.FC = () => {
           setConfirmDelete({ isOpen: false, bookingId: "", tutorName: "" })
         }
         onConfirm={confirmDeleteAction}
-        title="Delete Booking?"
-        message={`Are you sure you want to delete booking with ${confirmDelete.tutorName}? This action cannot be undone.`}
-        confirmText="Delete"
+        title="Hapus Booking?"
+        message={`Apakah Anda yakin ingin menghapus booking dengan ${confirmDelete.tutorName}? Tindakan ini tidak dapat dibatalkan.`}
+        confirmText="Hapus"
         type="danger"
         loading={isDeleting}
       />
@@ -296,10 +296,10 @@ export const BookingsPage: React.FC = () => {
         isOpen={confirmBulkDelete.isOpen}
         onClose={() => setConfirmBulkDelete({ isOpen: false, ids: [] })}
         onConfirm={confirmBulkDeleteAction}
-        title="Delete Multiple Bookings"
-        message={`Are you sure you want to delete ${confirmBulkDelete.ids.length} selected booking${confirmBulkDelete.ids.length > 1 ? 's' : ''}? This action cannot be undone.`}
-        confirmText="Delete All"
-        cancelText="Cancel"
+        title="Hapus Banyak Booking"
+        message={`Anda yakin ingin menghapus ${confirmBulkDelete.ids.length} booking yang dipilih? Tindakan ini tidak dapat dibatalkan.`}
+        confirmText="Hapus Semua"
+        cancelText="Batal"
         type="danger"
         loading={isDeleting}
       />

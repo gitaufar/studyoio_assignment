@@ -18,7 +18,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   iconColor,
 }) => {
   return (
-    <div className="flex flex-col bg-white dark:bg-dark-card rounded-xl shadow-md p-6 border dark:border-dark-border">
+    <div className="flex flex-col bg-white dark:bg-dark-card rounded-xl shadow-sm p-6 border border-gray-200 dark:border-dark-border">
       <div>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">

@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   ];
 
   return (
-    <aside className={`${isOpen ? 'w-64' : 'w-0'} lg:w-64 bg-white dark:bg-dark-card h-full shadow-lg transition-all duration-300 overflow-hidden border-r dark:border-dark-border`}>
+    <aside className={`${isOpen ? 'w-64' : 'w-0'} lg:w-64 bg-white dark:bg-dark-card h-full shadow-lg transition-all duration-300 overflow-hidden border-r border-gray-200 dark:border-dark-border`}>
       <div className="flex flex-col h-full">
         {/* Logo */}
         <div className="p-4 border-b border-gray-200 dark:border-dark-border">

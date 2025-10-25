@@ -7,8 +7,10 @@ interface TutorsBySubjectChartProps {
 }
 
 export const TutorsBySubjectChart: React.FC<TutorsBySubjectChartProps> = ({ data }) => {
+  const totalTutors = data.reduce((sum, item) => sum + item.count, 0);
+
   return (
-    <div className="bg-white dark:bg-dark-card rounded-xl shadow-md p-6 border dark:border-dark-border">
+    <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-6 border border-gray-200 dark:border-dark-border">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Tutors by Subject</h2>
       {data.length > 0 ? (
         <div className="h-72">
@@ -19,7 +21,10 @@ export const TutorsBySubjectChart: React.FC<TutorsBySubjectChartProps> = ({ data
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={(entry: any) => `${entry.subject}: ${((entry.count / data.reduce((sum, item) => sum + item.count, 0)) * 100).toFixed(0)}%`}
+                label={(entry: any) => {
+                  const percentage = ((entry.count / totalTutors) * 100).toFixed(0);
+                  return `${entry.subject} (${entry.count}) ${percentage}%`;
+                }}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="count"

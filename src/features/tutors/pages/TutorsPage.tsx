@@ -158,13 +158,13 @@ export const TutorsPage: React.FC = () => {
       setConfirmBulkDelete({ isOpen: false, ids: [] });
       setSuccessModal({
         isOpen: true,
-        message: `${count} tutor${count > 1 ? 's' : ''} successfully deleted.`,
+        message: `${count} tutor${count > 1 ? 's' : ''} berhasil dihapus.`,
       });
     } catch (error) {
       setConfirmBulkDelete({ isOpen: false, ids: [] });
       setErrorModal({
         isOpen: true,
-        message: "Failed to delete tutors. Please try again.",
+        message: "Gagal menghapus tutor. Silakan coba lagi.",
         error: error instanceof Error ? error.message : String(error),
       });
     } finally {
@@ -252,7 +252,7 @@ export const TutorsPage: React.FC = () => {
         resultCount={filteredTutors.length}
       />
       
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <TutorsTable
           tutors={paginatedData}
           loading={loading}
@@ -301,10 +301,10 @@ export const TutorsPage: React.FC = () => {
         isOpen={confirmBulkDelete.isOpen}
         onClose={() => setConfirmBulkDelete({ isOpen: false, ids: [] })}
         onConfirm={confirmBulkDeleteAction}
-        title="Delete Multiple Tutors"
-        message={`Are you sure you want to delete ${confirmBulkDelete.ids.length} selected tutor${confirmBulkDelete.ids.length > 1 ? 's' : ''}? This action cannot be undone.`}
-        confirmText="Delete All"
-        cancelText="Cancel"
+        title="Hapus Banyak Tutor"
+        message={`Anda yakin ingin menghapus ${confirmBulkDelete.ids.length} tutor yang dipilih? Tindakan ini tidak dapat dibatalkan.`}
+        confirmText="Hapus Semua"
+        cancelText="Batal"
         type="danger"
         loading={isDeleting}
       />

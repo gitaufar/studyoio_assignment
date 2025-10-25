@@ -51,14 +51,16 @@ export const Table: React.FC<TableProps> = ({
   const handleBulkDelete = () => {
     if (selectedIds.length === 0) return;
     
-    // Call parent's onBulkDelete directly - modal will be shown in parent component
-    onBulkDelete?.(selectedIds);
-    setSelectedIds([]);
+    const confirmMessage = `Hapus ${selectedIds.length} item yang dipilih?`;
+    if (window.confirm(confirmMessage)) {
+      onBulkDelete?.(selectedIds);
+      setSelectedIds([]);
+    }
   };
 
   if (data.length === 0) {
     return (
-      <div className="bg-white dark:bg-dark-card rounded-xl shadow-md p-12 text-center border dark:border-dark-border">
+      <div className="bg-white dark:bg-dark-card rounded-xl shadow-md p-12 text-center border border-gray-200 dark:border-dark-border">
         <svg className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
         </svg>
@@ -69,12 +71,12 @@ export const Table: React.FC<TableProps> = ({
   }
 
   return (
-    <div className="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden border dark:border-dark-border">
+    <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-dark-border">
       {/* Bulk Delete Toolbar */}
       {selectable && selectedIds.length > 0 && (
         <div className="bg-blue-50 dark:bg-blue-900/20 border-b dark:border-dark-border px-6 py-3 flex items-center justify-between">
           <span className="text-sm font-medium text-blue-900 dark:text-blue-300">
-            {selectedIds.length} item{selectedIds.length > 1 ? 's' : ''} selected
+            {selectedIds.length} item dipilih
           </span>
           <button
             onClick={handleBulkDelete}
@@ -83,14 +85,14 @@ export const Table: React.FC<TableProps> = ({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
-            Delete {selectedIds.length} Item{selectedIds.length > 1 ? 's' : ''}
+            Hapus {selectedIds.length} Item
           </button>
         </div>
       )}
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50 dark:bg-gray-800 border-b dark:border-dark-border">
+          <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-dark-border">
             <tr>
               {selectable && (
                 <th className="px-6 py-3 text-left">
@@ -109,7 +111,7 @@ export const Table: React.FC<TableProps> = ({
               ))}
               {(onEdit || onDelete) && (
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Actions
+                  Aksi
                 </th>
               )}
             </tr>
