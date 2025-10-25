@@ -8,16 +8,13 @@ import {
   WeeklyBookingsChart,
   QuickSummary,
 } from '../components';
+import { SkeletonDashboard } from '../../../shared/components';
 
 export const DashboardPage: React.FC = () => {
   const { stats, weeklyData, tutorSubjectData, loading, error } = useDashboard();
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <SkeletonDashboard />;
   }
 
   if (error) {

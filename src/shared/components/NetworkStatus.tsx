@@ -1,10 +1,6 @@
 import React from 'react';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
-/**
- * Network status indicator component
- * Shows when app is offline and using cached data
- */
 export const NetworkStatus: React.FC = () => {
   const { isOnline, wasOffline } = useNetworkStatus();
 

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useTutorStore } from '../store/tutorStore';
 import { TutorForm } from '../components/TutorForm';
 import type { Tutor } from '../types';
-import { Modal, Table } from '../../../shared/components';
+import { Modal, Table, SkeletonTable } from '../../../shared/components';
 
 export const TutorsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -138,9 +138,7 @@ export const TutorsPage: React.FC = () => {
       </div>
       
       {loading ? (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-        </div>
+        <SkeletonTable rows={5} columns={5} />
       ) : (
         <Table
           data={filteredTutors}

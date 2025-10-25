@@ -21,5 +21,18 @@
   
   /* Font family tokens */
   --font-sans: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
+  
+  /* Animations */
+  --animate-shimmer: shimmer 2s infinite;
 }
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
 @custom-variant dark (&:where(.dark, .dark *));

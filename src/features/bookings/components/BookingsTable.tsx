@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from '../../../shared/components';
+import { Table, SkeletonTable } from '../../../shared/components';
 import { BookingStatusBadge } from './BookingStatusBadge';
 import type { Booking } from '../types';
 
@@ -30,11 +30,7 @@ export const BookingsTable: React.FC<BookingsTableProps> = ({
   ];
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary"></div>
-      </div>
-    );
+    return <SkeletonTable rows={5} columns={6} />;
   }
 
   return (
