@@ -48,14 +48,17 @@
 - ✅ **Bookings CRUD** - Schedule management with status tracking
 - ✅ **Real-time Sync** - Automatic data updates using Firestore `onSnapshot`
 - ✅ **Offline-First** - IndexedDB caching for offline functionality
+- ✅ **Pagination** - Smart pagination with customizable items per page (5/10/20/50)
 
 ### 🎨 **UI/UX Excellence**
 - ✅ **Responsive Design** - Mobile, tablet, and desktop optimized
 - ✅ **Dark Mode** - Full dark theme support with toggle
-- ✅ **Loading States** - Smooth loading indicators and skeletons
+- ✅ **Skeleton Loading** - Smooth loading states (no spinners)
+- ✅ **Material UI Pickers** - Beautiful date and time selection
 - ✅ **Error Handling** - User-friendly error messages
 - ✅ **Empty States** - Helpful messages when no data exists
 - ✅ **Modals & Dialogs** - Clean form interfaces
+- ✅ **URL Query Params** - Filter state persistence across page refreshes
 
 ### ⚡ **Performance & Optimization**
 - ✅ **Zero Re-fetching** - No redundant API calls on route changes
@@ -78,10 +81,12 @@
 | **Frontend Framework** | React.js 19.1.1 + TypeScript 5.9.3 |
 | **Build Tool** | Vite 7.1.7 |
 | **Styling** | TailwindCSS 4.1.15 |
+| **UI Components** | Material UI (@mui/material, @mui/x-date-pickers) |
 | **State Management** | Zustand 5.0.8 |
 | **Routing** | React Router v7.9.4 |
 | **Backend** | Firebase 12.4.0 (Firestore + Auth) |
 | **Charts** | Recharts 3.3.0 |
+| **Date/Time** | Day.js 1.11.13 |
 | **Icons** | Heroicons (SVG) |
 | **Fonts** | Inter, Poppins (Google Fonts) |
 
@@ -184,11 +189,15 @@ studyoio/
 │   │   │   ├── Sidebar.tsx
 │   │   │   ├── Table.tsx
 │   │   │   ├── Modal.tsx
+│   │   │   ├── Pagination.tsx
+│   │   │   ├── Skeleton.tsx       # Loading skeletons
+│   │   │   ├── DatePicker.tsx     # Material UI wrapper
+│   │   │   ├── TimePicker.tsx     # Material UI wrapper
 │   │   │   └── NetworkStatus.tsx
 │   │   ├── hooks/                 # Shared hooks
 │   │   │   ├── useFirebaseSync.ts
 │   │   │   ├── useNetworkStatus.ts
-│   │   │   └── useResponsive.ts
+│   │   │   └── usePagination.ts   # Pagination logic
 │   │   ├── services/
 │   │   │   └── firebase.ts        # Firebase config
 │   │   ├── stores/                # Global stores
@@ -353,6 +362,7 @@ tsc --noEmit             # Check TypeScript errors
 
 ### 👨‍🏫 Tutors Management
 - **List View** - Table with Name, Email, Subject, Hourly Rate, Status
+- **Pagination** - 10 items per page (customizable: 5/10/20/50)
 - **Search** - Filter by name or email (URL param persistence)
 - **Status Filter** - All / Active / Inactive (URL param persistence)
 - **Add Tutor** - Modal form with validation
@@ -362,12 +372,15 @@ tsc --noEmit             # Check TypeScript errors
 
 ### 📅 Bookings Management
 - **List View** - Table with Tutor, Student, Date, Time, Status
+- **Pagination** - 10 items per page (customizable: 5/10/20/50)
 - **Status Filter** - All / Scheduled / Completed / Cancelled
 - **Range Filter** - "Next 3 Days" quick filter (from dashboard)
+- **Material UI Pickers** - Date and Time selection with dark mode
 - **Add Booking** - Modal form with date/time pickers
 - **Edit Booking** - Update booking details
 - **Delete Booking** - Confirmation dialog
 - **Auto-Status** - Calculate status based on date/time
+- **Validation** - End time must be after start time
 - **Empty State** - Helpful message when no bookings
 
 ---
@@ -416,27 +429,11 @@ tsc --noEmit             # Check TypeScript errors
 
 ## 🚧 Known Issues & Limitations
 
-- ⚠️ **Pagination**: Not implemented (all records loaded)
 - ⚠️ **Image Upload**: Not implemented (no Firebase Storage usage)
 - ⚠️ **Email Verification**: Not required for registration
 - ⚠️ **Password Reset**: Not implemented
 - ⚠️ **Role-Based Access**: All authenticated users have full access
-
----
-
-## 🔮 Future Enhancements
-
-### Phase 2 (Optional)
-- [ ] **Pagination** - Load data in chunks (10-20 per page)
-- [ ] **Advanced Search** - Multi-field search with operators
-- [ ] **Export Data** - CSV/Excel export functionality
-- [ ] **Bulk Actions** - Select multiple items for batch operations
-- [ ] **Notifications** - Real-time push notifications
-- [ ] **Analytics** - Advanced reporting and insights
-- [ ] **Role Management** - Admin, Tutor, Student roles
-- [ ] **Email Integration** - Automated email notifications
-- [ ] **Calendar View** - Visual booking calendar
-- [ ] **Chat Feature** - In-app messaging between tutors and students
+- ⚠️ **Bulk Delete**: Not implemented (delete one by one only)
 
 ---
 
@@ -467,10 +464,10 @@ chore: Maintenance tasks
 
 ## 👨‍💻 Author
 
-**Your Name**
-- 📧 Email: [your.email@example.com](mailto:your.email@example.com)
-- 🔗 GitHub: [@your-github-username](https://github.com/your-github-username)
-- 💼 LinkedIn: [your-linkedin](https://linkedin.com/in/your-linkedin)
+**Zhafir Aufar**
+- 📧 Email: [zhafiraufar123@gmail.com](mailto:zhafiraufar123@gmail.com)
+- 🔗 GitHub: [@gitaufar](https://github.com/gitaufar)
+- 💼 LinkedIn: [zhafir-aufar](https://www.linkedin.com/in/zhafir-aufar/)
 
 --- 
 

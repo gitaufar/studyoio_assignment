@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTutorStore } from '../store/tutorStore';
-import { InputField } from './InputField';
+import { Input } from '../../../shared/components';
 import { SelectField } from './SelectField';
 import type { Tutor } from '../types';
 
@@ -59,7 +59,7 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
         {tutor ? 'Edit Tutor' : 'Tambah Tutor'}
       </h2>
       
-      <InputField
+      <Input
         type="text"
         id="name"
         name="name"
@@ -70,7 +70,7 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
         required
       />
 
-      <InputField
+      <Input
         type="email"
         id="email"
         name="email"
@@ -81,7 +81,7 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
         required
       />
 
-      <InputField
+      <Input
         type="text"
         id="subject"
         name="subject"
@@ -92,7 +92,7 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
         required
       />
 
-      <InputField
+      <Input
         type="number"
         id="hourlyRate"
         name="hourlyRate"
