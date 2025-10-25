@@ -8,7 +8,8 @@ import {
   BookingsTable 
 } from '../components';
 import type { Booking } from '../types';
-import { Modal } from '../../../shared/components';
+import { Modal, Pagination } from '../../../shared/components';
+import { usePagination } from '../../../shared/hooks/usePagination';
 
 export const BookingsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -49,6 +50,19 @@ export const BookingsPage: React.FC = () => {
     return result;
   }, [bookings, statusFilter, rangeFilter]);
 
+  // Pagination
+  const {
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    paginatedData,
+    goToPage,
+    setItemsPerPage,
+  } = usePagination({
+    data: filteredBookings,
+    initialItemsPerPage: 10,
+  });
+
   const handleEdit = (booking: Booking) => {
     setSelectedBooking(booking);
     setIsModalOpen(true);
@@ -88,11 +102,22 @@ export const BookingsPage: React.FC = () => {
       />
       
       <BookingsTable 
-        bookings={filteredBookings}
+        bookings={paginatedData}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+
+      {!loading && filteredBookings.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={filteredBookings.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={goToPage}
+          onItemsPerPageChange={setItemsPerPage}
+        />
+      )}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <BookingForm

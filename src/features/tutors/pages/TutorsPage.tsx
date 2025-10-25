@@ -3,7 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useTutorStore } from '../store/tutorStore';
 import { TutorForm } from '../components/TutorForm';
 import type { Tutor } from '../types';
-import { Modal, Table, SkeletonTable } from '../../../shared/components';
+import { Modal, Table, SkeletonTable, Pagination } from '../../../shared/components';
+import { usePagination } from '../../../shared/hooks/usePagination';
 
 export const TutorsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,6 +70,19 @@ export const TutorsPage: React.FC = () => {
       return matchesSearch && matchesStatus;
     });
   }, [tutors, searchQuery, statusFilter]);
+
+  // Pagination
+  const {
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    paginatedData,
+    goToPage,
+    setItemsPerPage,
+  } = usePagination({
+    data: filteredTutors,
+    initialItemsPerPage: 10,
+  });
 
   const columns = [
     { key: 'name', label: 'Name' },
@@ -140,13 +154,26 @@ export const TutorsPage: React.FC = () => {
       {loading ? (
         <SkeletonTable rows={5} columns={5} />
       ) : (
-        <Table
-          data={filteredTutors}
-          columns={columns}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          emptyMessage="No tutors yet — click Add Tutor."
-        />
+        <>
+          <Table
+            data={paginatedData}
+            columns={columns}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            emptyMessage="No tutors yet — click Add Tutor."
+          />
+          
+          {filteredTutors.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredTutors.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={goToPage}
+              onItemsPerPageChange={setItemsPerPage}
+            />
+          )}
+        </>
       )}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

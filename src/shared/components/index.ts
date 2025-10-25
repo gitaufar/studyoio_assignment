@@ -3,6 +3,7 @@ export { AppBar } from './AppBar';
 export { Table } from './Table';
 export { Modal } from './Modal';
 export { NetworkStatus } from './NetworkStatus';
+export { Pagination } from './Pagination';
 export { 
   Skeleton, 
   SkeletonStatCard, 
