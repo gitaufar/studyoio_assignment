@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useBookingStore } from '../store/bookingStore';
 import { useTutorStore } from '../../tutors/store/tutorStore';
+import { DatePicker, TimePicker } from '../../../shared/components';
 import type { Booking } from '../types';
 
 interface BookingFormProps {
@@ -77,6 +78,51 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
     setFormData(newFormData);
   };
 
+  const handleDateChange = (dateString: string) => {
+    const newFormData = {
+      ...formData,
+      date: dateString,
+    };
+
+    // Auto-calculate status
+    if (dateString && newFormData.endTime) {
+      const bookingDateTime = new Date(`${dateString}T${newFormData.endTime}`);
+      const now = new Date();
+      
+      if (formData.status !== 'cancelled') {
+        newFormData.status = bookingDateTime > now ? 'scheduled' : 'completed';
+      }
+    }
+
+    setFormData(newFormData);
+  };
+
+  const handleStartTimeChange = (timeString: string) => {
+    setFormData({
+      ...formData,
+      startTime: timeString,
+    });
+  };
+
+  const handleEndTimeChange = (timeString: string) => {
+    const newFormData = {
+      ...formData,
+      endTime: timeString,
+    };
+
+    // Auto-calculate status
+    if (newFormData.date && timeString) {
+      const bookingDateTime = new Date(`${newFormData.date}T${timeString}`);
+      const now = new Date();
+      
+      if (formData.status !== 'cancelled') {
+        newFormData.status = bookingDateTime > now ? 'scheduled' : 'completed';
+      }
+    }
+
+    setFormData(newFormData);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
@@ -126,13 +172,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
         <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Tanggal:
         </label>
-        <input
-          type="date"
-          id="date"
-          name="date"
+        <DatePicker
           value={formData.date}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+          onChange={handleDateChange}
           required
         />
       </div>
@@ -142,13 +184,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Start Time:
           </label>
-          <input
-            type="time"
-            id="startTime"
-            name="startTime"
+          <TimePicker
             value={formData.startTime}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            onChange={handleStartTimeChange}
             required
           />
         </div>
@@ -157,15 +195,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           <label htmlFor="endTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             End Time:
           </label>
-          <input
-            type="time"
-            id="endTime"
-            name="endTime"
+          <TimePicker
             value={formData.endTime}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            onChange={handleEndTimeChange}
+            minTime={formData.startTime}
             required
           />
+          {formData.startTime && formData.endTime && formData.endTime <= formData.startTime && (
+            <p className="mt-1 text-xs text-red-500 dark:text-red-400">
+              End time must be after start time
+            </p>
+          )}
         </div>
       </div>
 
