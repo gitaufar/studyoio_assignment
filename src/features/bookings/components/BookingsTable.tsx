@@ -1,6 +1,5 @@
 import React from 'react';
-import { Table, SkeletonTable } from '../../../shared/components';
-import { BookingStatusBadge } from './BookingStatusBadge';
+import { Table, SkeletonTable, StatusBadge } from '../../../shared/components';
 import type { Booking } from '../types';
 
 interface BookingsTableProps {
@@ -25,7 +24,7 @@ export const BookingsTable: React.FC<BookingsTableProps> = ({
     { 
       key: 'status', 
       label: 'Status',
-      render: (value: string) => <BookingStatusBadge status={value as 'scheduled' | 'completed' | 'cancelled'} />
+      render: (value: string) => <StatusBadge status={value} />
     },
   ];
 

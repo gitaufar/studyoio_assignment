@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, SkeletonTable } from '../../../shared/components';
+import { Table, SkeletonTable, StatusBadge } from '../../../shared/components';
 import type { Tutor } from '../types';
 
 interface TutorsTableProps {
@@ -27,15 +27,7 @@ export const TutorsTable: React.FC<TutorsTableProps> = ({
     { 
       key: 'status', 
       label: 'Status',
-      render: (value: string) => (
-        <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-          value === 'active' 
-            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
-            : 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'
-        }`}>
-          {value.charAt(0).toUpperCase() + value.slice(1)}
-        </span>
-      )
+      render: (value: string) => <StatusBadge status={value} />
     },
   ];
 
