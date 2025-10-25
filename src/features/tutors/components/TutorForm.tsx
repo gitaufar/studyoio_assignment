@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTutorStore } from '../store/tutorStore';
-import { Input } from '../../../shared/components';
+import { Input, SuccessModal, ErrorModal } from '../../../shared/components';
 import { SelectField } from './SelectField';
 import type { Tutor } from '../types';
 
@@ -17,6 +17,15 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
     subject: '',
     hourlyRate: 0,
     status: 'active' as 'active' | 'inactive',
+  });
+
+  const [successModal, setSuccessModal] = useState<{ isOpen: boolean; message: string }>({
+    isOpen: false,
+    message: '',
+  });
+  const [errorModal, setErrorModal] = useState<{ isOpen: boolean; message: string; error?: string }>({
+    isOpen: false,
+    message: '',
   });
 
   useEffect(() => {
@@ -36,13 +45,29 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
     try {
       if (tutor?.id) {
         await updateTutor(tutor.id, formData);
+        setSuccessModal({
+          isOpen: true,
+          message: `${formData.name} has been successfully updated.`,
+        });
       } else {
         await addTutor(formData);
+        setSuccessModal({
+          isOpen: true,
+          message: `${formData.name} has been successfully added as a tutor.`,
+        });
       }
-      onSuccess?.();
     } catch (error) {
-      console.error('Error saving tutor:', error);
+      setErrorModal({
+        isOpen: true,
+        message: tutor ? 'Failed to update tutor. Please try again.' : 'Failed to add tutor. Please try again.',
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
+  };
+
+  const handleSuccessClose = () => {
+    setSuccessModal({ isOpen: false, message: '' });
+    onSuccess?.();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -126,6 +151,21 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
           {loading ? 'Menyimpan...' : 'Simpan'}
         </button>
       </div>
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={handleSuccessClose}
+        message={successModal.message}
+      />
+
+      {/* Error Modal */}
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ isOpen: false, message: '' })}
+        message={errorModal.message}
+        error={errorModal.error}
+      />
     </form>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useBookingStore } from '../store/bookingStore';
 import { useTutorStore } from '../../tutors/store/tutorStore';
-import { DatePicker, TimePicker } from '../../../shared/components';
+import { DatePicker, TimePicker, SuccessModal, ErrorModal } from '../../../shared/components';
 import type { Booking } from '../types';
 
 interface BookingFormProps {
@@ -20,6 +20,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
     endTime: '',
     status: 'scheduled',
   });
+
+  // Modal states
+  const [successModal, setSuccessModal] = useState<{
+    isOpen: boolean;
+    message: string;
+  }>({ isOpen: false, message: '' });
+  const [errorModal, setErrorModal] = useState<{
+    isOpen: boolean;
+    message: string;
+    error?: string;
+  }>({ isOpen: false, message: '' });
 
   // Fetch tutors when component mounts
   useEffect(() => {
@@ -44,13 +55,29 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
     try {
       if (booking?.id) {
         await updateBooking(booking.id, formData);
+        setSuccessModal({
+          isOpen: true,
+          message: `Booking dengan ${formData.tutorName} berhasil diperbarui.`,
+        });
       } else {
         await addBooking(formData);
+        setSuccessModal({
+          isOpen: true,
+          message: `Booking dengan ${formData.tutorName} berhasil ditambahkan.`,
+        });
       }
-      onSuccess?.();
-    } catch (error) {
-      console.error('Error saving booking:', error);
+    } catch (error: any) {
+      setErrorModal({
+        isOpen: true,
+        message: booking?.id ? 'Gagal memperbarui booking' : 'Gagal menambahkan booking',
+        error: error?.message || 'Unknown error',
+      });
     }
+  };
+
+  const handleSuccessClose = () => {
+    setSuccessModal({ isOpen: false, message: '' });
+    onSuccess?.();
   };
 
   const handleChange = (
@@ -239,6 +266,21 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
           {loading ? 'Menyimpan...' : 'Simpan'}
         </button>
       </div>
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={handleSuccessClose}
+        message={successModal.message}
+      />
+
+      {/* Error Modal */}
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ isOpen: false, message: '' })}
+        message={errorModal.message}
+        error={errorModal.error}
+      />
     </form>
   );
 };

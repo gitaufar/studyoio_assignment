@@ -8,7 +8,7 @@ import {
   BookingsTable 
 } from '../components';
 import type { Booking } from '../types';
-import { Modal, Pagination } from '../../../shared/components';
+import { Modal, Pagination, ConfirmationModal, SuccessModal, ErrorModal } from '../../../shared/components';
 import { usePagination } from '../../../shared/hooks/usePagination';
 
 export const BookingsPage: React.FC = () => {
@@ -17,6 +17,23 @@ export const BookingsPage: React.FC = () => {
   const { bookings, loading, deleteBooking } = useBookingStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | undefined>();
+  
+  // Modal states
+  const [confirmDelete, setConfirmDelete] = useState<{
+    isOpen: boolean;
+    bookingId: string;
+    tutorName: string;
+  }>({ isOpen: false, bookingId: '', tutorName: '' });
+  const [successModal, setSuccessModal] = useState<{
+    isOpen: boolean;
+    message: string;
+  }>({ isOpen: false, message: '' });
+  const [errorModal, setErrorModal] = useState<{
+    isOpen: boolean;
+    message: string;
+    error?: string;
+  }>({ isOpen: false, message: '' });
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const rangeFilter = searchParams.get('range');
   const statusFilter = (searchParams.get('status') || 'all') as 'all' | 'scheduled' | 'completed' | 'cancelled';
@@ -73,9 +90,35 @@ export const BookingsPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Apakah Anda yakin ingin menghapus booking ini?')) {
-      await deleteBooking(id);
+  const handleDelete = (id: string) => {
+    const booking = bookings.find(b => b.id === id);
+    if (!booking) return;
+
+    setConfirmDelete({
+      isOpen: true,
+      bookingId: id,
+      tutorName: booking.tutorName,
+    });
+  };
+
+  const confirmDeleteAction = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteBooking(confirmDelete.bookingId);
+      setConfirmDelete({ isOpen: false, bookingId: '', tutorName: '' });
+      setSuccessModal({
+        isOpen: true,
+        message: `Booking dengan ${confirmDelete.tutorName} berhasil dihapus.`,
+      });
+    } catch (error: any) {
+      setConfirmDelete({ isOpen: false, bookingId: '', tutorName: '' });
+      setErrorModal({
+        isOpen: true,
+        message: 'Gagal menghapus booking',
+        error: error?.message || 'Unknown error',
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -128,6 +171,33 @@ export const BookingsPage: React.FC = () => {
           }}
         />
       </Modal>
+
+      {/* Confirmation Modal for Delete */}
+      <ConfirmationModal
+        isOpen={confirmDelete.isOpen}
+        onClose={() => setConfirmDelete({ isOpen: false, bookingId: '', tutorName: '' })}
+        onConfirm={confirmDeleteAction}
+        title="Hapus Booking?"
+        message={`Apakah Anda yakin ingin menghapus booking dengan ${confirmDelete.tutorName}? Tindakan ini tidak dapat dibatalkan.`}
+        confirmText="Hapus"
+        type="danger"
+        loading={isDeleting}
+      />
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ isOpen: false, message: '' })}
+        message={successModal.message}
+      />
+
+      {/* Error Modal */}
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ isOpen: false, message: '' })}
+        message={errorModal.message}
+        error={errorModal.error}
+      />
     </div>
   );
 };

@@ -3,7 +3,15 @@ import { useSearchParams } from 'react-router-dom';
 import { useTutorStore } from '../store/tutorStore';
 import { TutorForm } from '../components/TutorForm';
 import type { Tutor } from '../types';
-import { Modal, Table, SkeletonTable, Pagination } from '../../../shared/components';
+import { 
+  Modal, 
+  Table, 
+  SkeletonTable, 
+  Pagination,
+  ConfirmationModal,
+  SuccessModal,
+  ErrorModal,
+} from '../../../shared/components';
 import { usePagination } from '../../../shared/hooks/usePagination';
 
 export const TutorsPage: React.FC = () => {
@@ -12,6 +20,20 @@ export const TutorsPage: React.FC = () => {
   const { tutors, loading, deleteTutor } = useTutorStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTutor, setSelectedTutor] = useState<Tutor | undefined>();
+  
+  // Modal states
+  const [confirmDelete, setConfirmDelete] = useState<{ isOpen: boolean; tutorId?: string; tutorName?: string }>({
+    isOpen: false,
+  });
+  const [successModal, setSuccessModal] = useState<{ isOpen: boolean; message: string }>({
+    isOpen: false,
+    message: '',
+  });
+  const [errorModal, setErrorModal] = useState<{ isOpen: boolean; message: string; error?: string }>({
+    isOpen: false,
+    message: '',
+  });
+  const [isDeleting, setIsDeleting] = useState(false);
   
   const searchQuery = searchParams.get('search') || '';
   const statusFilter = (searchParams.get('status') || 'all') as 'all' | 'active' | 'inactive';
@@ -29,8 +51,34 @@ export const TutorsPage: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this tutor?')) {
-      await deleteTutor(id);
+    const tutor = tutors.find(t => t.id === id);
+    setConfirmDelete({ 
+      isOpen: true, 
+      tutorId: id,
+      tutorName: tutor?.name || 'this tutor',
+    });
+  };
+
+  const confirmDeleteAction = async () => {
+    if (!confirmDelete.tutorId) return;
+    
+    setIsDeleting(true);
+    try {
+      await deleteTutor(confirmDelete.tutorId);
+      setConfirmDelete({ isOpen: false });
+      setSuccessModal({
+        isOpen: true,
+        message: `${confirmDelete.tutorName} has been successfully deleted.`,
+      });
+    } catch (error) {
+      setConfirmDelete({ isOpen: false });
+      setErrorModal({
+        isOpen: true,
+        message: 'Failed to delete tutor. Please try again.',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -185,6 +233,34 @@ export const TutorsPage: React.FC = () => {
           }}
         />
       </Modal>
+
+      {/* Confirmation Modal for Delete */}
+      <ConfirmationModal
+        isOpen={confirmDelete.isOpen}
+        onClose={() => setConfirmDelete({ isOpen: false })}
+        onConfirm={confirmDeleteAction}
+        title="Delete Tutor"
+        message={`Are you sure you want to delete "${confirmDelete.tutorName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        loading={isDeleting}
+      />
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ isOpen: false, message: '' })}
+        message={successModal.message}
+      />
+
+      {/* Error Modal */}
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ isOpen: false, message: '' })}
+        message={errorModal.message}
+        error={errorModal.error}
+      />
     </div>
   );
 };
