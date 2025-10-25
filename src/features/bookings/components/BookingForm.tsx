@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useBookingStore } from '../store/bookingStore';
 import { useTutorStore } from '../../tutors/store/tutorStore';
 import { DatePicker, TimePicker, SuccessModal, ErrorModal } from '../../../shared/components';
+import { useNetworkStatus } from '../../../shared/hooks/useNetworkStatus';
 import type { Booking } from '../types';
 
 interface BookingFormProps {
@@ -12,6 +13,7 @@ interface BookingFormProps {
 export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) => {
   const { addBooking, updateBooking, loading } = useBookingStore();
   const { tutors, fetchTutors } = useTutorStore();
+  const { isOnline } = useNetworkStatus();
   const [formData, setFormData] = useState<Omit<Booking, 'id' | 'createdAt' | 'updatedAt'>>({
     tutorName: '',
     studentName: '',
@@ -52,6 +54,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check internet connection first
+    if (!isOnline) {
+      setErrorModal({
+        isOpen: true,
+        message: 'Anda sedang offline. Silakan periksa koneksi internet Anda dan coba lagi.',
+        error: 'No internet connection',
+      });
+      return;
+    }
+    
     try {
       if (booking?.id) {
         await updateBooking(booking.id, formData);

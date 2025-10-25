@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTutorStore } from '../store/tutorStore';
 import { Input, SuccessModal, ErrorModal } from '../../../shared/components';
+import { useNetworkStatus } from '../../../shared/hooks/useNetworkStatus';
 import { SelectField } from './SelectField';
 import type { Tutor } from '../types';
 
@@ -11,6 +12,7 @@ interface TutorFormProps {
 
 export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
   const { addTutor, updateTutor, loading } = useTutorStore();
+  const { isOnline } = useNetworkStatus();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,6 +44,17 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check internet connection first
+    if (!isOnline) {
+      setErrorModal({
+        isOpen: true,
+        message: 'You are currently offline. Please check your internet connection and try again.',
+        error: 'No internet connection',
+      });
+      return;
+    }
+    
     try {
       if (tutor?.id) {
         await updateTutor(tutor.id, formData);
