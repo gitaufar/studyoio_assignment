@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react';
 interface UsePaginationProps<T> {
   data: T[];
   initialItemsPerPage?: number;
+  initialPage?: number;
 }
 
 interface UsePaginationReturn<T> {
@@ -18,9 +19,10 @@ interface UsePaginationReturn<T> {
 
 export const usePagination = <T,>({ 
   data, 
-  initialItemsPerPage = 10 
+  initialItemsPerPage = 10,
+  initialPage = 1
 }: UsePaginationProps<T>): UsePaginationReturn<T> => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [itemsPerPage, setItemsPerPageState] = useState(initialItemsPerPage);
 
   // Calculate total pages

@@ -49,6 +49,10 @@ export const BookingsPage: React.FC = () => {
     | "scheduled"
     | "completed"
     | "cancelled";
+  
+  // Get pagination params from URL
+  const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+  const limitFromUrl = parseInt(searchParams.get("limit") || "10", 10);
 
   // No need to fetch - data is already syncing via useFirebaseSync in App.tsx
 
@@ -89,8 +93,25 @@ export const BookingsPage: React.FC = () => {
     setItemsPerPage,
   } = usePagination({
     data: filteredBookings,
-    initialItemsPerPage: 10,
+    initialItemsPerPage: limitFromUrl,
+    initialPage: pageFromUrl,
   });
+
+  // Update URL when pagination changes
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    setSearchParams(params);
+    goToPage(page);
+  };
+
+  const handleItemsPerPageChange = (limit: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("limit", limit.toString());
+    params.set("page", "1"); // Reset to page 1 when changing items per page
+    setSearchParams(params);
+    setItemsPerPage(limit);
+  };
 
   const handleEdit = (booking: Booking) => {
     setSelectedBooking(booking);
@@ -184,8 +205,8 @@ export const BookingsPage: React.FC = () => {
             totalPages={totalPages}
             totalItems={filteredBookings.length}
             itemsPerPage={itemsPerPage}
-            onPageChange={goToPage}
-            onItemsPerPageChange={setItemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
           />
         )}
       </div>
