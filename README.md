@@ -6,7 +6,7 @@
 
 ## 📋 Overview
 
-This project was developed as a **frontend internship assignment** to demonstrate proficiency in React, TypeScript, state management, and Firebase integration. The dashboard enables administrators to manage **tutors**, **bookings**, and view **real-time analytics** through an intuitive interface.
+This project was developed as a **web developer internship assignment** to demonstrate proficiency in React, TypeScript, state management, and Firebase integration. The dashboard enables administrators to manage **tutors**, **bookings**, and view **real-time analytics** through an intuitive interface.
 
 **Core Modules:**
 - 🧑‍🏫 **Tutors Management** — Create, update, delete, and filter tutors
