@@ -7,6 +7,7 @@ interface TutorsTableProps {
   loading: boolean;
   onEdit: (tutor: Tutor) => void;
   onDelete: (id: string) => void;
+  onBulkDelete?: (ids: string[]) => void;
 }
 
 export const TutorsTable: React.FC<TutorsTableProps> = ({
@@ -14,6 +15,7 @@ export const TutorsTable: React.FC<TutorsTableProps> = ({
   loading,
   onEdit,
   onDelete,
+  onBulkDelete,
 }) => {
   const columns = [
     { key: 'name', label: 'Name' },
@@ -41,6 +43,8 @@ export const TutorsTable: React.FC<TutorsTableProps> = ({
       columns={columns}
       onEdit={onEdit}
       onDelete={onDelete}
+      onBulkDelete={onBulkDelete}
+      selectable={!!onBulkDelete}
       emptyMessage="No tutors yet — click Add Tutor."
     />
   );

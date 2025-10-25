@@ -32,6 +32,13 @@ export const BookingsPage: React.FC = () => {
     bookingId: string;
     tutorName: string;
   }>({ isOpen: false, bookingId: "", tutorName: "" });
+  const [confirmBulkDelete, setConfirmBulkDelete] = useState<{
+    isOpen: boolean;
+    ids: string[];
+  }>({
+    isOpen: false,
+    ids: [],
+  });
   const [successModal, setSuccessModal] = useState<{
     isOpen: boolean;
     message: string;
@@ -141,7 +148,7 @@ export const BookingsPage: React.FC = () => {
       setErrorModal({
         isOpen: true,
         message:
-          "Anda sedang offline. Silakan periksa koneksi internet Anda dan coba lagi.",
+          "You are currently offline. Please check your internet connection and try again.",
         error: "No internet connection",
       });
       return;
@@ -153,13 +160,61 @@ export const BookingsPage: React.FC = () => {
       setConfirmDelete({ isOpen: false, bookingId: "", tutorName: "" });
       setSuccessModal({
         isOpen: true,
-        message: `Booking dengan ${confirmDelete.tutorName} berhasil dihapus.`,
+        message: `Booking with ${confirmDelete.tutorName} successfully deleted.`,
       });
     } catch (error: any) {
       setConfirmDelete({ isOpen: false, bookingId: "", tutorName: "" });
       setErrorModal({
         isOpen: true,
-        message: "Gagal menghapus booking",
+        message: "Failed to delete booking. Please try again.",
+        error: error?.message || "Unknown error",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleBulkDelete = (ids: string[]) => {
+    setConfirmBulkDelete({
+      isOpen: true,
+      ids,
+    });
+  };
+
+  const confirmBulkDeleteAction = async () => {
+    if (confirmBulkDelete.ids.length === 0) return;
+
+    // Check internet connection first
+    if (!isOnline) {
+      setConfirmBulkDelete({ isOpen: false, ids: [] });
+      setErrorModal({
+        isOpen: true,
+        message:
+          "You are currently offline. Please check your internet connection and try again.",
+        error: "No internet connection",
+      });
+      return;
+    }
+
+    setIsDeleting(true);
+    const count = confirmBulkDelete.ids.length;
+    
+    try {
+      // Delete all bookings sequentially
+      await Promise.all(
+        confirmBulkDelete.ids.map(id => deleteBooking(id))
+      );
+      
+      setConfirmBulkDelete({ isOpen: false, ids: [] });
+      setSuccessModal({
+        isOpen: true,
+        message: `${count} booking${count > 1 ? 's' : ''} successfully deleted.`,
+      });
+    } catch (error: any) {
+      setConfirmBulkDelete({ isOpen: false, ids: [] });
+      setErrorModal({
+        isOpen: true,
+        message: "Failed to delete bookings. Please try again.",
         error: error?.message || "Unknown error",
       });
     } finally {
@@ -197,6 +252,7 @@ export const BookingsPage: React.FC = () => {
           loading={loading}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onBulkDelete={handleBulkDelete}
         />
 
         {!loading && filteredBookings.length > 0 && (
@@ -228,9 +284,22 @@ export const BookingsPage: React.FC = () => {
           setConfirmDelete({ isOpen: false, bookingId: "", tutorName: "" })
         }
         onConfirm={confirmDeleteAction}
-        title="Hapus Booking?"
-        message={`Apakah Anda yakin ingin menghapus booking dengan ${confirmDelete.tutorName}? Tindakan ini tidak dapat dibatalkan.`}
-        confirmText="Hapus"
+        title="Delete Booking?"
+        message={`Are you sure you want to delete booking with ${confirmDelete.tutorName}? This action cannot be undone.`}
+        confirmText="Delete"
+        type="danger"
+        loading={isDeleting}
+      />
+
+      {/* Confirmation Modal for Bulk Delete */}
+      <ConfirmationModal
+        isOpen={confirmBulkDelete.isOpen}
+        onClose={() => setConfirmBulkDelete({ isOpen: false, ids: [] })}
+        onConfirm={confirmBulkDeleteAction}
+        title="Delete Multiple Bookings"
+        message={`Are you sure you want to delete ${confirmBulkDelete.ids.length} selected booking${confirmBulkDelete.ids.length > 1 ? 's' : ''}? This action cannot be undone.`}
+        confirmText="Delete All"
+        cancelText="Cancel"
         type="danger"
         loading={isDeleting}
       />

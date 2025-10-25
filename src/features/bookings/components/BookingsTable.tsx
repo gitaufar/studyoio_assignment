@@ -7,13 +7,15 @@ interface BookingsTableProps {
   loading: boolean;
   onEdit: (booking: Booking) => void;
   onDelete: (id: string) => void;
+  onBulkDelete?: (ids: string[]) => void;
 }
 
 export const BookingsTable: React.FC<BookingsTableProps> = ({ 
   bookings, 
   loading, 
   onEdit, 
-  onDelete 
+  onDelete,
+  onBulkDelete
 }) => {
   const columns = [
     { key: 'tutorName', label: 'Tutor' },
@@ -38,6 +40,8 @@ export const BookingsTable: React.FC<BookingsTableProps> = ({
       columns={columns}
       onEdit={onEdit}
       onDelete={onDelete}
+      onBulkDelete={onBulkDelete}
+      selectable={!!onBulkDelete}
       emptyMessage="No bookings yet — click Add Booking."
     />
   );

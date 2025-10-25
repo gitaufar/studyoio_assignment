@@ -34,6 +34,13 @@ export const TutorsPage: React.FC = () => {
   }>({
     isOpen: false,
   });
+  const [confirmBulkDelete, setConfirmBulkDelete] = useState<{
+    isOpen: boolean;
+    ids: string[];
+  }>({
+    isOpen: false,
+    ids: [],
+  });
   const [successModal, setSuccessModal] = useState<{
     isOpen: boolean;
     message: string;
@@ -110,6 +117,54 @@ export const TutorsPage: React.FC = () => {
       setErrorModal({
         isOpen: true,
         message: "Failed to delete tutor. Please try again.",
+        error: error instanceof Error ? error.message : String(error),
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleBulkDelete = (ids: string[]) => {
+    setConfirmBulkDelete({
+      isOpen: true,
+      ids,
+    });
+  };
+
+  const confirmBulkDeleteAction = async () => {
+    if (confirmBulkDelete.ids.length === 0) return;
+
+    // Check internet connection first
+    if (!isOnline) {
+      setConfirmBulkDelete({ isOpen: false, ids: [] });
+      setErrorModal({
+        isOpen: true,
+        message:
+          "You are currently offline. Please check your internet connection and try again.",
+        error: "No internet connection",
+      });
+      return;
+    }
+
+    setIsDeleting(true);
+    const count = confirmBulkDelete.ids.length;
+    
+    try {
+      // Delete all tutors sequentially
+      await Promise.all(
+        confirmBulkDelete.ids.map(id => deleteTutor(id))
+      );
+      
+      setConfirmBulkDelete({ isOpen: false, ids: [] });
+      setSuccessModal({
+        isOpen: true,
+        message: `${count} tutor${count > 1 ? 's' : ''} successfully deleted.`,
+      });
+    } catch (error) {
+      setConfirmBulkDelete({ isOpen: false, ids: [] });
+      setErrorModal({
+        isOpen: true,
+        message: "Failed to delete tutors. Please try again.",
         error: error instanceof Error ? error.message : String(error),
       });
     } finally {
@@ -203,6 +258,7 @@ export const TutorsPage: React.FC = () => {
           loading={loading}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onBulkDelete={handleBulkDelete}
         />
 
         {!loading && filteredTutors.length > 0 && (
@@ -235,6 +291,19 @@ export const TutorsPage: React.FC = () => {
         title="Delete Tutor"
         message={`Are you sure you want to delete "${confirmDelete.tutorName}"? This action cannot be undone.`}
         confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        loading={isDeleting}
+      />
+
+      {/* Confirmation Modal for Bulk Delete */}
+      <ConfirmationModal
+        isOpen={confirmBulkDelete.isOpen}
+        onClose={() => setConfirmBulkDelete({ isOpen: false, ids: [] })}
+        onConfirm={confirmBulkDeleteAction}
+        title="Delete Multiple Tutors"
+        message={`Are you sure you want to delete ${confirmBulkDelete.ids.length} selected tutor${confirmBulkDelete.ids.length > 1 ? 's' : ''}? This action cannot be undone.`}
+        confirmText="Delete All"
         cancelText="Cancel"
         type="danger"
         loading={isDeleting}

@@ -1,76 +1,81 @@
-# 📚 StudyOIO - Admin Panel
+# 📚 StudyOIO - EdTech Admin Panel
 
-> **Interactive EdTech Platform Admin Dashboard**  
-> Modern React.js Admin Panel untuk manajemen Tutors dan Bookings dengan Firebase integration, real-time sync, dan offline-first architecture.
+> **Web Developer Internship Assignment**  
+> Modern React.js Admin Panel for managing Tutors and Bookings with Firebase integration, real-time sync, and offline-first architecture.
 
 [![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue.svg)](https://www.typescriptlang.org/)
 [![Firebase](https://img.shields.io/badge/Firebase-12.4.0-orange.svg)](https://firebase.google.com/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.15-38B2AC.svg)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
-## 📸 Screenshots
+## 🎥 Demo Video
+
+**� Watch Full Demo:** [YouTube Link](https://youtube.com/your-demo-link)
+
+*walkthrough showing:*
+- ✅ Login flow and authentication
+- ✅ Tutor CRUD operations (Create, Read, Update, Delete)
+- ✅ Booking CRUD operations
+- ✅ Dashboard overview with real-time data
+- ✅ Responsive design (desktop & mobile)
+- ✅ Dark mode toggle
+- ✅ Offline-first functionality
+
+---
+
+## �📸 Screenshots
 
 ### 🏠 Dashboard Overview
 ![Dashboard](./docs/screenshots/dashboard.png)
-*Real-time metrics, charts, and upcoming sessions at a glance*
+*Real-time metrics, charts, and upcoming sessions*
 
 ### 👨‍🏫 Tutors Management
 ![Tutors Page](./docs/screenshots/tutors.png)
-*CRUD operations with search and filter capabilities*
+*Complete CRUD with search and filters*
 
 ### 📅 Bookings Management
 ![Bookings Page](./docs/screenshots/bookings.png)
-*Schedule management with status tracking*
+*Schedule management with date/time pickers*
 
 ### 🔐 Authentication
 ![Login Page](./docs/screenshots/login.png)
-*Secure Firebase authentication*
-
-### 🌙 Dark Mode
-![Dark Mode](./docs/screenshots/dark-mode.png)
-*Full dark mode support throughout the app*
-
-### 📱 Responsive Design
-![Mobile View](./docs/screenshots/mobile.png)
-*Mobile-friendly interface*
+*Firebase email/password authentication*
 
 ---
 
 ## ✨ Key Features
 
-### 🔥 **Core Functionality**
-- ✅ **Authentication** - Secure email/password login with Firebase Auth
-- ✅ **Dashboard** - Real-time metrics, charts, and analytics
-- ✅ **Tutors CRUD** - Complete tutor management with search and filters
-- ✅ **Bookings CRUD** - Schedule management with status tracking
-- ✅ **Real-time Sync** - Automatic data updates using Firestore `onSnapshot`
-- ✅ **Offline-First** - IndexedDB caching for offline functionality
-- ✅ **Pagination** - Smart pagination with customizable items per page (5/10/20/50)
+### 🔥 **Core Functionality** (Assignment Requirements)
+- ✅ **Firebase Authentication** - Email/Password login/logout
+- ✅ **Dashboard** - Total tutors, total bookings, upcoming sessions with charts
+- ✅ **Tutors CRUD** - Create, Read, Update, Delete tutors in Firestore
+- ✅ **Bookings CRUD** - Create, Read, Update, Delete bookings in Firestore
+- ✅ **State Management** - Zustand for global state
+- ✅ **Responsive UI** - Mobile, tablet, desktop optimized
+- ✅ **Material UI Pickers** - Date and time selection for bookings
+- ✅ **Real-time Updates** - Firestore `onSnapshot` for live data sync
 
-### 🎨 **UI/UX Excellence**
-- ✅ **Responsive Design** - Mobile, tablet, and desktop optimized
-- ✅ **Dark Mode** - Full dark theme support with toggle
-- ✅ **Skeleton Loading** - Smooth loading states (no spinners)
-- ✅ **Material UI Pickers** - Beautiful date and time selection
-- ✅ **Error Handling** - User-friendly error messages
-- ✅ **Empty States** - Helpful messages when no data exists
-- ✅ **Modals & Dialogs** - Clean form interfaces
-- ✅ **URL Query Params** - Filter state persistence across page refreshes
+### 🎨 **UI/UX Features**
+- ✅ **TailwindCSS** - Clean, professional layout with consistent spacing
+- ✅ **Responsive Design** - Works on desktop, tablet, and mobile
+- ✅ **Dark Mode** - Full dark theme support
+- ✅ **Sidebar Navigation** - Persistent on desktop, collapsible on mobile
+- ✅ **Loading States** - Skeleton loaders (no spinners)
+- ✅ **Error Handling** - Toast notifications for errors
+- ✅ **Empty States** - Helpful messages when no data
+- ✅ **Form Validation** - Required field validation
 
-### ⚡ **Performance & Optimization**
-- ✅ **Zero Re-fetching** - No redundant API calls on route changes
-- ✅ **IndexedDB Cache** - ~50ms load time from cache
-- ✅ **Real-time Updates** - WebSocket-based sync (~100ms latency)
-- ✅ **Zustand State** - Lightweight global state management
-- ✅ **Code Splitting** - Optimized bundle size with Vite
-
-### 🔒 **Security & Protection**
-- ✅ **Protected Routes** - Auth guards for private pages
-- ✅ **Public Routes** - Redirect logged-in users from login/register
-- ✅ **Firebase Security** - Firestore rules and Auth integration
+### ⚡ **Extra Features** (Beyond Requirements)
+- ✅ **Offline-First** - Works without internet using IndexedDB cache
+- ✅ **URL Query Params** - Pagination and filter state in URL (shareable links)
+- ✅ **Search Functionality** - Filter tutors by name/email
+- ✅ **Status Filters** - Filter by active/inactive (tutors) and scheduled/completed/cancelled (bookings)
+- ✅ **Pagination** - Customizable items per page (5/10/20/50)
+- ✅ **Bulk Delete** - Select multiple items and delete at once
+- ✅ **Charts** - Bar chart (weekly bookings), Pie chart (tutors by subject)
+- ✅ **Network Status** - Offline indicator with queue sync
 
 ---
 
@@ -95,9 +100,12 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ and npm/yarn
-- Firebase account
-- Git
+## 🚀 Setup Instructions
+
+### Prerequisites
+- **Node.js** 18+ (recommended: v20)
+- **npm** or **yarn**
+- **Firebase account** (free tier is sufficient)
 
 ### 1️⃣ Clone Repository
 ```bash
@@ -110,35 +118,69 @@ cd studyoio_assignment
 npm install
 ```
 
-### 3️⃣ Firebase Setup
-Create a Firebase project at [Firebase Console](https://console.firebase.google.com):
+### 3️⃣ Firebase Configuration
 
-1. **Create Project**
-2. **Enable Authentication** → Email/Password
-3. **Create Firestore Database** → Production mode
-4. **Get Config** → Project Settings → Your apps → Config
+**Create Firebase Project:**
+1. Go to [Firebase Console](https://console.firebase.google.com)
+2. Click "Add Project"
+3. Enter project name (e.g., "studyoio-admin")
+4. Disable Google Analytics (optional)
+5. Click "Create Project"
+
+**Enable Authentication:**
+1. Navigate to **Authentication** → **Sign-in method**
+2. Click **Email/Password**
+3. Enable and Save
+
+**Create Firestore Database:**
+1. Navigate to **Firestore Database**
+2. Click **Create Database**
+3. Choose **Production mode**
+4. Select region (closest to you)
+5. Click **Enable**
+
+**Get Firebase Config:**
+1. Go to **Project Settings** (gear icon)
+2. Scroll to "Your apps"
+3. Click **Web** icon `</>`
+4. Register app (nickname: "studyoio-web")
+5. Copy the `firebaseConfig` object
 
 ### 4️⃣ Environment Variables
-Create `.env` file in root directory:
+
+Create `.env` file in **root directory**:
 
 ```env
-VITE_FIREBASE_API_KEY=your_api_key_here
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
+# Copy from Firebase Console → Project Settings → Your apps → Config
+VITE_FIREBASE_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789012
+VITE_FIREBASE_APP_ID=1:123456789012:web:abcdef1234567890
 ```
+
+**⚠️ Important:** Do NOT commit `.env` to Git (already in `.gitignore`)
 
 ### 5️⃣ Run Development Server
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser 🎉
+App will open at **http://localhost:5173** 🎉
 
----
+### 6️⃣ First-Time Usage
 
+**Create Test Account:**
+1. Go to `/register` route
+2. Enter email and password (min 6 characters)
+3. Click "Register"
+4. You'll be redirected to `/dashboard`
+
+**Add Sample Data:**
+- Add 2-3 tutors in `/tutors` page
+- Add 2-3 bookings in `/bookings` page
+- Check dashboard for real-time charts and metrics
 ## 📁 Project Structure
 
 ```
@@ -170,14 +212,14 @@ studyoio/
 │   │   │   └── types/
 │   │   │
 │   │   ├── tutors/
-│   │   │   ├── components/        # TutorForm, InputField
+│   │   │   ├── components/        # TutorsHeader, TutorsFilter, TutorsTable
 │   │   │   ├── pages/             # TutorsPage
 │   │   │   ├── services/          # tutorService (Firestore)
 │   │   │   ├── store/             # tutorStore (Zustand)
 │   │   │   └── types/
 │   │   │
 │   │   └── bookings/
-│   │       ├── components/        # BookingForm, Filters
+│   │       ├── components/        # BookingsHeader, BookingsFilter, BookingsTable
 │   │       ├── pages/             # BookingsPage
 │   │       ├── services/          # bookingService
 │   │       ├── store/             # bookingStore
@@ -190,14 +232,15 @@ studyoio/
 │   │   │   ├── Table.tsx
 │   │   │   ├── Modal.tsx
 │   │   │   ├── Pagination.tsx
-│   │   │   ├── Skeleton.tsx       # Loading skeletons
-│   │   │   ├── DatePicker.tsx     # Material UI wrapper
-│   │   │   ├── TimePicker.tsx     # Material UI wrapper
+│   │   │   ├── Skeleton.tsx
+│   │   │   ├── StatusBadge.tsx
+│   │   │   ├── DatePicker.tsx
+│   │   │   ├── TimePicker.tsx
 │   │   │   └── NetworkStatus.tsx
 │   │   ├── hooks/                 # Shared hooks
 │   │   │   ├── useFirebaseSync.ts
 │   │   │   ├── useNetworkStatus.ts
-│   │   │   └── usePagination.ts   # Pagination logic
+│   │   │   └── usePagination.ts
 │   │   ├── services/
 │   │   │   └── firebase.ts        # Firebase config
 │   │   ├── stores/                # Global stores
@@ -214,10 +257,82 @@ studyoio/
 ├── docs/                          # Documentation
 │   └── screenshots/               # App screenshots
 ├── .env.example                   # Environment variables template
+├── .gitignore
 ├── package.json
 ├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
 ├── vite.config.ts
 ├── tailwind.config.js
+├── eslint.config.js
+└── README.md
+```
+
+---
+
+## 📊 Firestore Database Structure
+
+### Collections
+
+#### **tutors** Collection
+```typescript
+tutors/{tutorId}
+{
+  id: string;                    // Auto-generated by Firestore
+  name: string;                  // Tutor full name (e.g., "John Doe")
+  email: string;                 // Contact email (e.g., "john@example.com")
+  subject: string;               // Teaching subject (e.g., "Mathematics")
+  hourlyRate: number;            // Rate per hour (e.g., 150000 = Rp 150.000)
+  status: 'active' | 'inactive'; // Current availability status
+  createdAt: Timestamp;          // Auto-set on creation
+  updatedAt: Timestamp;          // Auto-updated on edit
+}
+```
+
+**Example Document:**
+```json
+{
+  "id": "tutor123",
+  "name": "Budi Santoso",
+  "email": "budi@example.com",
+  "subject": "Matematika",
+  "hourlyRate": 150000,
+  "status": "active",
+  "createdAt": "2025-01-20T10:00:00Z",
+  "updatedAt": "2025-01-20T10:00:00Z"
+}
+```
+
+#### **bookings** Collection
+```typescript
+bookings/{bookingId}
+{
+  id: string;                                      // Auto-generated by Firestore
+  tutorName: string;                               // Selected tutor name
+  studentName: string;                             // Student name
+  date: string;                                    // Booking date (YYYY-MM-DD)
+  startTime: string;                               // Start time (HH:mm format)
+  endTime: string;                                 // End time (HH:mm format)
+  status: 'scheduled' | 'completed' | 'cancelled'; // Booking status
+  createdAt: Timestamp;                            // Auto-set on creation
+  updatedAt: Timestamp;                            // Auto-updated on edit
+}
+```
+
+**Example Document:**
+```json
+{
+  "id": "booking123",
+  "tutorName": "Budi Santoso",
+  "studentName": "Andi Wijaya",
+  "date": "2025-01-25",
+  "startTime": "14:00",
+  "endTime": "16:00",
+  "status": "scheduled",
+  "createdAt": "2025-01-20T10:00:00Z",
+  "updatedAt": "2025-01-20T10:00:00Z"
+}
+``` tailwind.config.js
 └── README.md
 ```
 
@@ -293,22 +408,45 @@ studyoio/
 
 ```javascript
 rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Allow authenticated users to read/write tutors
-    match /tutors/{tutorId} {
-      allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null;
-    }
-    
-    // Allow authenticated users to read/write bookings
-    match /bookings/{bookingId} {
-      allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null;
-    }
-  }
+## 📝 NPM Scripts
+
+```bash
+# Development
+npm run dev              # Start Vite dev server (localhost:5173)
+
+# Build
+npm run build            # TypeScript compile + Vite build (dist/)
+npm run preview          # Preview production build locally
+
+# Linting
+npm run lint             # Run ESLint for code quality
+```
+
+## 🗂️ Dependencies
+
+### Core Dependencies
+```json
+{
+  "react": "^19.1.0",
+  "react-dom": "^19.1.0",
+  "react-router-dom": "^7.9.4",
+  "firebase": "^12.4.0",
+  "zustand": "^5.0.8"
 }
 ```
+
+### UI Libraries
+```json
+{
+  "@mui/material": "^7.0.1",
+  "@mui/x-date-pickers": "^8.0.0",
+  "dayjs": "^1.11.13",
+  "recharts": "^3.3.0",
+  "heroicons": "^2.2.0"
+}
+```
+
+See `package.json` for complete list.
 
 ### Indexes (Firestore)
 
@@ -404,21 +542,87 @@ tsc --noEmit             # Check TypeScript errors
 - **Initial Subscription**: 1 WebSocket per collection
 - **Route Changes**: 0 requests
 - **Data Updates**: Real-time via WebSocket (no polling)
+## 🎯 Assignment Checklist
+
+### ✅ Core Requirements (All Completed)
+- [x] React.js with Vite
+- [x] Firebase Authentication (email/password)
+- [x] Firebase Firestore for database
+- [x] Zustand for state management
+- [x] TailwindCSS for styling
+- [x] Responsive design (mobile + desktop)
+- [x] Tutors CRUD operations
+## 💡 Development Notes
+
+### Tools & AI Assistance Used
+- ✅ **GitHub Copilot** - Code suggestions and autocompletion
+- ✅ **ChatGPT** - Architecture planning and debugging
+- ✅ **Claude** - Code review and optimization
+
+### Code Quality
+- Clean, modular component structure
+- TypeScript for type safety
+- Consistent naming conventions
+- Meaningful Git commits
+- Comprehensive comments in complex logic
+
+### Architecture Decisions
+- **Feature-based folder structure** - Better scalability than by type
+- **Zustand over Redux** - Simpler API, less boilerplate
+- **Real-time sync** - Better UX than manual refresh
+- **URL state** - Shareable links with filters
 
 ---
 
-## 🧪 Testing Offline Mode
+## 📧 Submission
 
-### Browser DevTools Method:
-1. Open Chrome DevTools (F12)
-2. Go to **Network** tab
-3. Change **Online** dropdown to **Offline**
-4. Navigate through app → Data loads from cache instantly!
-5. Try CRUD operations → Queued for sync when online
-6. Switch back to **Online** → Auto-sync occurs
+**Assignment Submitted To:** studyosystemio@gmail.com  
+**Subject:** [Assignment] Web Developer – Zhafir Aufar  
+**Date:** January 25, 2025
 
-### Expected Behavior:
-- ✅ App loads instantly from cache
+**Deliverables:**
+1. ✅ GitHub Repository: https://github.com/gitaufar/studyoio_assignment
+2. ✅ Demo Video: [YouTube Link - 2 minutes]
+3. ✅ README.md with setup instructions
+4. ✅ .env.example for Firebase config
+
+---
+
+## 👨‍� Author
+
+**Zhafir Aufar**
+- 📧 Email: [zhafiraufar123@gmail.com](mailto:zhafiraufar123@gmail.com)
+- 🔗 GitHub: [@gitaufar](https://github.com/gitaufar)
+- 💼 LinkedIn: [zhafir-aufar](https://www.linkedin.com/in/zhafir-aufar/)
+
+**Position:** Frontend Web Developer Internship  
+**Company:** EdTech - Interactive Math Learning Platform  
+**Assignment Duration:** 3 Days (January 23-25, 2025)
+
+---
+
+## 🙏 Acknowledgments
+
+Special thanks to EdTech recruitment team for this opportunity!
+
+**Resources Used:**
+- [React Documentation](https://react.dev/)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [TailwindCSS Docs](https://tailwindcss.com/docs)
+- [Material UI Docs](https://mui.com/)
+- [Zustand Documentation](https://zustand-demo.pmnd.rs/)
+
+---
+
+<div align="center">
+
+### 🚀 Built with ❤️ for EdTech Web Developer Internship
+
+**⭐ Star this repo if you find it helpful!**
+
+*For Indonesian Applicants Only 🇮🇩*
+
+</div>p loads instantly from cache
 - ✅ "Using cached data" indicator shows in dashboard header
 - ✅ Orange offline badge appears at bottom
 - ✅ All pages work with cached data
@@ -433,7 +637,6 @@ tsc --noEmit             # Check TypeScript errors
 - ⚠️ **Email Verification**: Not required for registration
 - ⚠️ **Password Reset**: Not implemented
 - ⚠️ **Role-Based Access**: All authenticated users have full access
-- ⚠️ **Bulk Delete**: Not implemented (delete one by one only)
 
 ---
 
@@ -441,22 +644,11 @@ tsc --noEmit             # Check TypeScript errors
 
 This is an assignment project for **EdTech Web Developer Internship**.
 
-### Development Workflow:
-1. Create feature branch: `git checkout -b feat/feature-name`
-2. Make changes and commit: `git commit -m "feat: description"`
-3. Push to remote: `git push origin feat/feature-name`
-4. Create Pull Request
-
 ### Commit Message Convention:
 ```
 feat: Add new feature
 fix: Fix bug
-docs: Update documentation
-style: Format code
 refactor: Refactor code
-perf: Performance improvement
-test: Add tests
-chore: Maintenance tasks
 ```
 
 ---
