@@ -10,8 +10,8 @@ export const TutorsBySubjectChart: React.FC<TutorsBySubjectChartProps> = ({ data
   const totalTutors = data.reduce((sum, item) => sum + item.count, 0);
 
   return (
-    <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-6 border border-gray-200 dark:border-dark-border">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Tutors by Subject</h2>
+    <div className="bg-white dark:bg-dark-card rounded-xl shadow-sm p-4 sm:p-5 md:p-6 border border-gray-200 dark:border-dark-border">
+      <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">Tutors by Subject</h2>
       {data.length > 0 ? (
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
