@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-light dark:bg-dark px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border dark:border-dark-border">
+        <div className="bg-white dark:bg-dark-card rounded-2xl shadow-sm p-8 border border-gray-200 dark:border-dark-border">
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">

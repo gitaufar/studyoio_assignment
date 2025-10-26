@@ -78,6 +78,7 @@ export const Register: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              focusColor="secondary"
             />
 
             <PasswordInput

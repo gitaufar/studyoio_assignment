@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Input } from '../../../shared/components';
 
 interface PasswordInputProps {
   id: string;
@@ -24,28 +25,24 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   focusColor = 'primary',
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const ringColor = focusColor === 'primary' ? 'focus:ring-primary' : 'focus:ring-secondary';
   
   return (
-    <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-        {label}
-      </label>
-      <div className="relative">
-        <input
-          type={showPassword ? 'text' : 'password'}
-          id={id}
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          className={`w-full px-3 py-2 pr-12 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 ${ringColor} focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500`}
-          required={required}
-        />
+    <Input
+      id={id}
+      name={name}
+      type={showPassword ? 'text' : 'password'}
+      label={label}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      required={required}
+      helperText={helperText}
+      focusColor={focusColor}
+      endIcon={
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+          className="focus:outline-none"
           tabIndex={-1}
         >
           {showPassword ? (
@@ -59,10 +56,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
             </svg>
           )}
         </button>
-      </div>
-      {helperText && (
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{helperText}</p>
-      )}
-    </div>
+      }
+    />
   );
 };

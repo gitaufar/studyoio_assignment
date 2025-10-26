@@ -106,7 +106,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick }) => {
 
               {/* Dropdown Menu */}
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg py-1 z-10 border border-gray-200 dark:border-dark-border hover:bg-red-50 dark:hover:bg-red-900/20">
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg py-1 z-10 border border-gray-200 dark:border-dark-border hover:bg-red-50 dark:hover:bg-red-900">
                   <button 
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400"
