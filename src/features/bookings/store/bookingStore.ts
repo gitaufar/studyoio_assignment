@@ -34,11 +34,8 @@ export const useBookingStore = create<BookingStore>((set, get) => ({
     
     // Prevent duplicate subscriptions
     if (state.isSubscribed || state.unsubscribe) {
-      console.warn('⚠️ Already subscribed to bookings');
       return;
     }
-
-    console.log('🔄 Subscribing to bookings real-time updates...');
     
     const unsubscribe = bookingService.subscribeToBookings(
       (bookings) => {
@@ -66,7 +63,6 @@ export const useBookingStore = create<BookingStore>((set, get) => ({
   unsubscribeBookings: () => {
     const state = get();
     if (state.unsubscribe) {
-      console.log('🛑 Unsubscribing from bookings');
       state.unsubscribe();
       set({ unsubscribe: null, isSubscribed: false });
     }

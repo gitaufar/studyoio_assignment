@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTutorStore } from '../store/tutorStore';
-import { Input, SuccessModal, ErrorModal } from '../../../shared/components';
+import { Input, SelectField, SuccessModal, ErrorModal } from '../../../shared/components';
 import { useNetworkStatus } from '../../../shared/hooks/useNetworkStatus';
-import { SelectField } from './SelectField';
 import type { Tutor } from '../types';
 
 interface TutorFormProps {
@@ -143,17 +142,22 @@ export const TutorForm: React.FC<TutorFormProps> = ({ tutor, onSuccess }) => {
         required
       />
 
-      <SelectField
-        id="status"
-        name="status"
-        label="Status"
-        value={formData.status}
-        onChange={handleChange}
-        required
-      >
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-      </SelectField>
+      <div>
+        <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Status <span className="text-red-500">*</span>
+        </label>
+        <SelectField
+          id="status"
+          name="status"
+          value={formData.status}
+          onChange={(value) => handleChange({ target: { name: 'status', value } } as any)}
+          options={[
+            { value: 'active', label: 'Active' },
+            { value: 'inactive', label: 'Inactive' }
+          ]}
+          required
+        />
+      </div>
 
       <div className="flex justify-end gap-3 pt-4">
         <button

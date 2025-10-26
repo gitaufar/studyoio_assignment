@@ -20,7 +20,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick }) => {
       await signOut(auth);
       navigate('/login');
     } catch (error) {
-      console.error('Logout error:', error);
+      // Silent fail
     }
   };
 

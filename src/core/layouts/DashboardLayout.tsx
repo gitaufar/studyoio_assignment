@@ -7,7 +7,13 @@ interface DashboardLayoutProps {
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  // Default sidebar state: closed on mobile (< 1024px), open on desktop (>= 1024px)
+  const [sidebarOpen, setSidebarOpen] = React.useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1024; // lg breakpoint
+    }
+    return true;
+  });
 
   return (
     <div className="flex h-screen bg-light dark:bg-dark">

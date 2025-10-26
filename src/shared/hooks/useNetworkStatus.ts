@@ -8,7 +8,6 @@ export const useNetworkStatus = () => {
     const handleOnline = () => {
       setIsOnline(true);
       if (wasOffline) {
-        console.log('🟢 Back online - Firestore will sync automatically');
         setWasOffline(false);
       }
     };
@@ -16,7 +15,6 @@ export const useNetworkStatus = () => {
     const handleOffline = () => {
       setIsOnline(false);
       setWasOffline(true);
-      console.log('🔴 Offline - Using cached data from IndexedDB');
     };
 
     window.addEventListener('online', handleOnline);

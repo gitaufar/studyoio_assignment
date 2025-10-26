@@ -11,15 +11,12 @@ export const useFirebaseSync = () => {
   const unsubscribeBookings = useBookingStore((state) => state.unsubscribeBookings);
 
   useEffect(() => {
-    console.log('🔥 Initializing Firebase real-time sync...');
-    
     // Start subscriptions
     subscribeTutors();
     subscribeBookings();
 
     // Cleanup on unmount
     return () => {
-      console.log('🧹 Cleaning up Firebase subscriptions...');
       unsubscribeTutors();
       unsubscribeBookings();
     };

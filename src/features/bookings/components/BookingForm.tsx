@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useBookingStore } from '../store/bookingStore';
 import { useTutorStore } from '../../tutors/store/tutorStore';
-import { DatePicker, TimePicker, SuccessModal, ErrorModal } from '../../../shared/components';
+import { DatePicker, TimePicker, SelectField, Input, SuccessModal, ErrorModal } from '../../../shared/components';
 import { useNetworkStatus } from '../../../shared/hooks/useNetworkStatus';
 import type { Booking } from '../types';
 
@@ -173,37 +173,35 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
         <label htmlFor="tutorName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Nama Tutor:
         </label>
-        <select
+        <SelectField
           id="tutorName"
           name="tutorName"
           value={formData.tutorName}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+          onChange={(value) => handleChange({ target: { name: 'tutorName', value } } as any)}
+          options={[
+            { value: '', label: '-- Select Tutor --' },
+            ...tutors
+              .filter(tutor => tutor.status === 'active')
+              .map((tutor) => ({
+                value: tutor.name,
+                label: `${tutor.name} - ${tutor.subject}`
+              }))
+          ]}
           required
-        >
-          <option value="">-- Select Tutor --</option>
-          {tutors
-            .filter(tutor => tutor.status === 'active')
-            .map((tutor) => (
-              <option key={tutor.id} value={tutor.name}>
-                {tutor.name} - {tutor.subject}
-              </option>
-            ))}
-        </select>
+        />
       </div>
 
       <div>
         <label htmlFor="studentName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Nama Siswa:
         </label>
-        <input
+        <Input
           type="text"
           id="studentName"
           name="studentName"
           value={formData.studentName}
           onChange={handleChange}
           placeholder="Enter student name"
-          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           required
         />
       </div>
@@ -253,18 +251,18 @@ export const BookingForm: React.FC<BookingFormProps> = ({ booking, onSuccess }) 
         <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Status:
         </label>
-        <select
+        <SelectField
           id="status"
           name="status"
           value={formData.status}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+          onChange={(value) => handleChange({ target: { name: 'status', value } } as any)}
+          options={[
+            { value: 'scheduled', label: 'Scheduled' },
+            { value: 'completed', label: 'Completed' },
+            { value: 'cancelled', label: 'Cancelled' }
+          ]}
           required
-        >
-          <option value="scheduled">Scheduled</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
+        />
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
           Auto-filled based on date/time, but you can change it manually
         </p>

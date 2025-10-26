@@ -15,6 +15,25 @@ This project was developed as a **web developer internship assignment** to demon
 
 ---
 
+## 📸 Screenshots
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Tutors Management
+![Tutors](docs/screenshots/tutors.png)
+
+### Bookings Management
+![Bookings](docs/screenshots/bookings.png)
+
+### Dark Mode
+![Dark Mode](docs/screenshots/dark-mode.png)
+
+### Mobile Responsive
+![Mobile](docs/screenshots/mobile.png)
+
+---
+
 ## ✨ Features
 
 - 🔐 **Firebase Authentication** — Secure login/register with email & password
@@ -44,7 +63,58 @@ This project was developed as a **web developer internship assignment** to demon
 
 ---
 
-## 📁 Project Structure
+## � Dependencies
+
+### Core Dependencies
+```json
+{
+  "react": "^19.1.1",                    // UI library
+  "react-dom": "^19.1.1",                // React DOM renderer
+  "react-router-dom": "^7.9.4",          // Routing & navigation
+  "typescript": "~5.9.3"                 // Type safety
+}
+```
+
+### State Management & Data
+```json
+{
+  "zustand": "^5.0.8",                   // Lightweight state management
+  "firebase": "^12.4.0"                  // Backend (Auth + Firestore)
+}
+```
+
+### UI & Styling
+```json
+{
+  "tailwindcss": "^4.1.15",              // Utility-first CSS framework
+  "@tailwindcss/vite": "^4.1.15",        // Tailwind Vite plugin
+  "@mui/x-date-pickers": "^8.15.0",      // Material UI Date/Time pickers
+  "@emotion/react": "^11.14.0",          // CSS-in-JS (MUI dependency)
+  "@emotion/styled": "^11.14.1"          // Styled components (MUI dependency)
+}
+```
+
+### Charts & Utilities
+```json
+{
+  "recharts": "^3.3.0",                  // Dashboard charts
+  "dayjs": "^1.11.18"                    // Date/time manipulation
+}
+```
+
+### Build Tools
+```json
+{
+  "vite": "^7.1.7",                      // Build tool & dev server
+  "@vitejs/plugin-react": "^5.0.4",      // React plugin for Vite
+  "eslint": "^9.36.0",                   // Code linting
+  "typescript-eslint": "^8.45.0"         // TypeScript ESLint support
+}
+```
+
+---
+
+## �📁 Project Structure
 
 ```
 src/

@@ -20,7 +20,6 @@ import { usePagination } from "../../../shared/hooks/usePagination";
 
 export const TutorsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  // Remove fetchTutors - data now comes from real-time subscription in App.tsx
   const { tutors, loading, deleteTutor } = useTutorStore();
   const { isOnline } = useNetworkStatus();
   const [isModalOpen, setIsModalOpen] = useState(false);

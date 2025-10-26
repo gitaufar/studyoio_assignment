@@ -25,20 +25,13 @@ export const useTutorStore = create<TutorStore>((set, get) => ({
   isSubscribed: false,
   unsubscribe: null,
 
-  /**
-   * Subscribe to real-time tutor updates
-   * Data automatically syncs from Firestore's IndexedDB cache
-   */
   subscribeTutors: () => {
     const state = get();
     
     // Prevent duplicate subscriptions
     if (state.isSubscribed || state.unsubscribe) {
-      console.warn('⚠️ Already subscribed to tutors');
       return;
     }
-
-    console.log('🔄 Subscribing to tutors real-time updates...');
     
     const unsubscribe = tutorService.subscribeToTutors(
       (tutors) => {
@@ -66,16 +59,12 @@ export const useTutorStore = create<TutorStore>((set, get) => ({
   unsubscribeTutors: () => {
     const state = get();
     if (state.unsubscribe) {
-      console.log('🛑 Unsubscribing from tutors');
       state.unsubscribe();
       set({ unsubscribe: null, isSubscribed: false });
     }
   },
 
-  /**
-   * Legacy fetch method (for one-time loads)
-   * Prefer subscribeTutors for real-time updates
-   */
+
   fetchTutors: async () => {
     set({ loading: true, error: null });
     try {

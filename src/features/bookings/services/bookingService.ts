@@ -38,14 +38,9 @@ export const bookingService = {
           ...doc.data(),
         })) as Booking[];
         
-        // Check if data came from cache or server
-        const source = snapshot.metadata.fromCache ? 'cache' : 'server';
-        console.log(`📅 Bookings loaded from ${source} (${bookings.length} bookings)`);
-        
         onUpdate(bookings);
       },
       (error) => {
-        console.error('❌ Error subscribing to bookings:', error);
         if (onError) onError(error as Error);
       }
     );

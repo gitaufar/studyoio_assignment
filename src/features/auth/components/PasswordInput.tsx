@@ -39,7 +39,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full px-4 py-3 pr-12 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 ${ringColor} focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500`}
+          className={`w-full px-3 py-2 pr-12 border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 ${ringColor} focus:border-transparent transition-all bg-white dark:bg-dark text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500`}
           required={required}
         />
         <button

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Checkbox from '@mui/material/Checkbox';
 
 interface Column {
   key: string;
@@ -96,11 +97,20 @@ export const Table: React.FC<TableProps> = ({
             <tr>
               {selectable && (
                 <th className="px-6 py-3 text-left">
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={selectedIds.length === data.length && data.length > 0}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < data.length}
                     onChange={toggleSelectAll}
-                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                    size="small"
+                    sx={{
+                      color: 'rgb(156, 163, 175)',
+                      '&.Mui-checked': {
+                        color: 'rgb(59, 130, 246)',
+                      },
+                      '&.MuiCheckbox-indeterminate': {
+                        color: 'rgb(59, 130, 246)',
+                      },
+                    }}
                   />
                 </th>
               )}
@@ -126,11 +136,16 @@ export const Table: React.FC<TableProps> = ({
               >
                 {selectable && (
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       checked={selectedIds.includes(row.id)}
                       onChange={() => toggleSelect(row.id)}
-                      className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                      size="small"
+                      sx={{
+                        color: 'rgb(156, 163, 175)',
+                        '&.Mui-checked': {
+                          color: 'rgb(59, 130, 246)',
+                        },
+                      }}
                     />
                   </td>
                 )}

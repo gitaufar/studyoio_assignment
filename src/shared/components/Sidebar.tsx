@@ -17,7 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       await signOut(auth);
       navigate('/login');
     } catch (error) {
-      console.error('Logout error:', error);
+      // Silent fail
     }
   };
 

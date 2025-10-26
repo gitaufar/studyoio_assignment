@@ -3,6 +3,7 @@ export { AppBar } from './AppBar';
 export { Table } from './Table';
 export { Modal } from './Modal';
 export { Input } from './Input';
+export { SelectField } from './SelectField';
 export { StatusBadge } from './StatusBadge';
 export { ConfirmationModal } from './ConfirmationModal';
 export { SuccessModal } from './SuccessModal';

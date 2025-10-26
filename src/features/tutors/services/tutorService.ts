@@ -36,14 +36,9 @@ export const tutorService = {
           ...doc.data(),
         })) as Tutor[];
         
-        // Check if data came from cache or server
-        const source = snapshot.metadata.fromCache ? 'cache' : 'server';
-        console.log(`📚 Tutors loaded from ${source} (${tutors.length} tutors)`);
-        
         onUpdate(tutors);
       },
       (error) => {
-        console.error('❌ Error subscribing to tutors:', error);
         if (onError) onError(error as Error);
       }
     );
