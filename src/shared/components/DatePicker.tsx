@@ -19,6 +19,7 @@ interface DatePickerProps {
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
+  label,
   value,
   onChange,
   error = false,
@@ -36,12 +37,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       createTheme({
         palette: {
           mode: isDarkMode ? "dark" : "light",
-          primary: {
-            main: "#4CAF50",
-          },
-          secondary: {
-            main: "#2196F3",
-          },
+          primary: { main: "#4CAF50" },
+          secondary: { main: "#2196F3" },
         },
       }),
     [isDarkMode]
@@ -53,17 +50,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const dayjsMaxDate = maxDate ? dayjs(maxDate) : undefined;
 
   const handleChange = (newValue: Dayjs | null) => {
-    if (newValue) {
-      onChange(newValue.format("YYYY-MM-DD"));
-    } else {
-      onChange("");
-    }
+    if (newValue) onChange(newValue.format("YYYY-MM-DD"));
+    else onChange("");
   };
 
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <MuiDatePicker
+          label={label}
           value={dayjsValue}
           onChange={handleChange}
           minDate={dayjsMinDate}
@@ -75,7 +70,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
               error: error,
               helperText: helperText,
               variant: "outlined",
-              size: "small",
+              // ubah ke "medium" agar tidak auto kecil padding-nya
+              size: "medium",
+              required: true,
               InputProps: {
                 sx: {
                   backgroundColor: isDarkMode ? "#121212" : "#ffffff",
@@ -94,10 +91,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                     borderColor: "rgb(76, 175, 80)",
                     borderWidth: "2px",
                   },
-                  "& .MuiInputBase-input": {
+                  // padding 1rem (16px)
+                  "& input.MuiInputBase-input": {
                     color: isDarkMode
                       ? "rgb(229, 231, 235)"
                       : "rgb(17, 24, 39)",
+                    padding: "1rem !important", // pastikan override MUI
                   },
                   "& .MuiSvgIcon-root": {
                     color: isDarkMode
@@ -111,6 +110,24 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                   color: isDarkMode
                     ? "rgb(156, 163, 175)"
                     : "rgb(107, 114, 128)",
+                  "&.Mui-focused": {
+                    color: "rgb(76, 175, 80)",
+                  },
+                },
+              },
+            },
+            popper: {
+              sx: {
+                "& .MuiPaper-root": {
+                  backgroundColor: isDarkMode ? "#1e293b" : "#f9fafb",
+                  color: isDarkMode ? "white" : "black",
+                },
+                "& .MuiPickersDay-root.Mui-selected": {
+                  backgroundColor: "#4CAF50",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#43A047",
+                  },
                 },
               },
             },

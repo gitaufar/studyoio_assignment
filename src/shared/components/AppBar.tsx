@@ -106,29 +106,10 @@ export const AppBar: React.FC<AppBarProps> = ({ onMenuClick }) => {
 
               {/* Dropdown Menu */}
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg py-1 z-10 border border-gray-200 dark:border-dark-border">
-                  <button 
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      // Profile action
-                    }}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  >
-                    Profile
-                  </button>
-                  <button 
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      // Settings action
-                    }}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  >
-                    Settings
-                  </button>
-                  <hr className="my-1 dark:border-dark-border" />
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg py-1 z-10 border border-gray-200 dark:border-dark-border hover:bg-red-50 dark:hover:bg-red-900/20">
                   <button 
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400"
                   >
                     Logout
                   </button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { TextField, InputAdornment } from '@mui/material';
 import { useTheme } from '../stores/themeContext';
 
 interface InputProps {
@@ -18,6 +18,8 @@ interface InputProps {
   min?: string | number;
   max?: string | number;
   step?: string | number;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
 }
 
 export const Input: React.FC<InputProps> = ({ 
@@ -36,6 +38,8 @@ export const Input: React.FC<InputProps> = ({
   min,
   max,
   step,
+  startIcon,
+  endIcon,
 }) => {
   const { theme: currentTheme } = useTheme();
   const isDarkMode = currentTheme === 'dark';
@@ -64,6 +68,22 @@ export const Input: React.FC<InputProps> = ({
         fullWidth
         size="small"
         className={className}
+        InputProps={{
+          startAdornment: startIcon ? (
+            <InputAdornment position="start">
+              <span className="text-gray-400 dark:text-gray-500">
+                {startIcon}
+              </span>
+            </InputAdornment>
+          ) : undefined,
+          endAdornment: endIcon ? (
+            <InputAdornment position="end">
+              <span className="text-gray-400 dark:text-gray-500">
+                {endIcon}
+              </span>
+            </InputAdornment>
+          ) : undefined,
+        }}
         inputProps={{
           min,
           max,
@@ -85,7 +105,7 @@ export const Input: React.FC<InputProps> = ({
             },
             '& input': {
               color: isDarkMode ? 'rgb(255, 255, 255)' : 'rgb(17, 24, 39)',
-              padding: '0.5rem 0.75rem',
+              padding: '1rem',
             },
             '& input::placeholder': {
               color: isDarkMode ? 'rgb(107, 114, 128)' : 'rgb(156, 163, 175)',

@@ -78,7 +78,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           borderWidth: '2px',
         },
         '& .MuiSelect-select': {
-          padding: '0.5rem 0.75rem',
+          padding: '1rem',
           color: isDarkMode ? 'rgb(255, 255, 255)' : 'rgb(17, 24, 39)',
         },
         '& .MuiSvgIcon-root': {

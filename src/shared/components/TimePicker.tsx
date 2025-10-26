@@ -75,7 +75,8 @@ export const TimePicker: React.FC<TimePickerProps> = ({
               error: error,
               helperText: helperText,
               variant: "outlined",
-              size: "small",
+              // ubah ke medium agar padding tidak dikecilkan otomatis
+              size: "medium",
               InputProps: {
                 sx: {
                   backgroundColor: isDarkMode ? "#121212" : "#ffffff",
@@ -94,10 +95,12 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                     borderColor: "rgb(76, 175, 80)",
                     borderWidth: "2px",
                   },
-                  "& .MuiInputBase-input": {
+                  // padding input diperbesar jadi 1rem
+                  "& input.MuiInputBase-input": {
                     color: isDarkMode
                       ? "rgb(229, 231, 235)"
                       : "rgb(17, 24, 39)",
+                    padding: "1rem !important", // pastikan override MUI
                   },
                   "& .MuiSvgIcon-root": {
                     color: isDarkMode
@@ -121,7 +124,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
                   color: isDarkMode ? "white" : "black",
                 },
                 "& .MuiClock-pin, & .MuiClockPointer-root": {
-                  backgroundColor: "#4CAF50", // warna primary kamu
+                  backgroundColor: "#4CAF50",
                 },
                 "& .MuiClockPointer-thumb": {
                   borderColor: "#4CAF50",
