@@ -17,6 +17,12 @@ This project was developed as a **web developer internship assignment** to demon
 
 ## 📸 Screenshots
 
+### Register
+![Dashboard](docs/screenshots/register.png)
+
+### Login
+![Dashboard](docs/screenshots/login.png)
+
 ### Dashboard
 ![Dashboard](docs/screenshots/dashboard.png)
 
