@@ -4,12 +4,13 @@ Tambahkan screenshot aplikasi Anda di folder ini dengan nama file yang sesuai:
 
 ## Required Screenshots:
 
-1. **dashboard.png** - Dashboard overview dengan metrics dan charts
-2. **tutors.png** - Tutors management page dengan table dan filters
-3. **bookings.png** - Bookings management page
-4. **login.png** - Login page
-5. **dark-mode.png** - Dark mode view (any page)
-6. **mobile.png** - Mobile responsive view
+1. **login.png** - Login page
+2. **register.png** - Register page
+3. **dashboard.png** - Dashboard overview dengan metrics dan charts
+4. **tutors.png** - Tutors management page dengan table dan filters
+5. **bookings.png** - Bookings management page
+6. **dark-mode.png** - Dark mode view (any page)
+7. **mobile.png** - Mobile responsive view
 
 ## Screenshot Guidelines:
 
