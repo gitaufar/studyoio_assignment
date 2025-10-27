@@ -46,10 +46,12 @@ This project was developed as a **web developer internship assignment** to demon
 - 🗂️ **Full CRUD Operations** — Manage tutors and bookings with real-time Firestore sync
 - 📈 **Interactive Dashboard** — Charts (weekly bookings, tutors by subject) using Recharts
 - 🎨 **Dark Mode Support** — Toggle between light and dark themes
-- 📱 **Responsive Design** — Mobile-first UI with TailwindCSS
 - 🔍 **Search & Filters** — Filter by status, search by name/email, pagination support
 - 🚀 **URL State Persistence** — Pagination and filters stored in URL query params
 - ⚡ **Optimized Performance** — Zustand for state management, Firebase onSnapshot for real-time updates
+- 📴 **Offline Support** — Firebase IndexedDB persistence for offline data access
+- 🌐 **Network Status Indicator** — Real-time online/offline detection with visual feedback
+- 🎯 **Bulk Operations** — Select multiple items for batch delete operations
 
 ---
 
@@ -69,7 +71,7 @@ This project was developed as a **web developer internship assignment** to demon
 
 ---
 
-## � Dependencies
+## 📦 Dependencies
 
 ### Core Dependencies
 ```json
@@ -85,7 +87,7 @@ This project was developed as a **web developer internship assignment** to demon
 ```json
 {
   "zustand": "^5.0.8",                   // Lightweight state management
-  "firebase": "^12.4.0"                  // Backend (Auth + Firestore)
+  "firebase": "^12.4.0"                  // Backend (Auth + Firestore with offline persistence)
 }
 ```
 
@@ -95,6 +97,7 @@ This project was developed as a **web developer internship assignment** to demon
   "tailwindcss": "^4.1.15",              // Utility-first CSS framework
   "@tailwindcss/vite": "^4.1.15",        // Tailwind Vite plugin
   "@mui/x-date-pickers": "^8.15.0",      // Material UI Date/Time pickers
+  "@mui/material": "^6.3.2",             // Material UI components
   "@emotion/react": "^11.14.0",          // CSS-in-JS (MUI dependency)
   "@emotion/styled": "^11.14.1"          // Styled components (MUI dependency)
 }
@@ -162,12 +165,14 @@ src/
 │
 ├── shared/
 │   ├── components/                    # Table, Modal, Sidebar, AppBar, etc.
-│   ├── hooks/                         # usePagination, useFirebaseSync
+│   ├── hooks/                         # usePagination, useFirebaseSync, useNetworkStatus
 │   ├── services/
 │   │   └── firebase.ts                # Firebase config
-│   └── stores/
-│       ├── userContext.tsx            # User auth state
-│       └── themeContext.tsx           # Dark mode state
+│   ├── stores/
+│   │   ├── userContext.tsx            # User auth state
+│   │   └── themeContext.tsx           # Dark mode state
+│   └── utils/
+│       └── localStorage.ts            # LocalStorage helpers
 │
 ├── App.tsx
 └── main.tsx
@@ -189,6 +194,27 @@ npm install
 ```
 
 ### 3. Configure Firebase
+
+#### Create Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project
+3. Enable **Authentication** (Email/Password + Google Sign-In)
+4. Create **Firestore Database** (Start in production mode)
+5. Add security rules:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Only authenticated users can read/write
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+
+#### Configure Environment Variables
 Create a `.env` file in the root directory:
 
 ```env
@@ -199,6 +225,8 @@ VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 ```
+
+> ⚠️ **Important**: Add `.env` to `.gitignore` to keep credentials secure
 
 ### 4. Run Development Server
 ```bash
@@ -211,12 +239,11 @@ Access the app at **http://localhost:5173**
 npm run build
 npm run preview
 ```
-
 ---
 
 ## 🎬 Demo
 
-[📹 Watch Demo Video](https://your-demo-link-here)
+**Video Walkthrough**: [Watch Demo Video](https://your-demo-link-here) 
 
 ---
 
