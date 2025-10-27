@@ -51,12 +51,8 @@ export const Table: React.FC<TableProps> = ({
 
   const handleBulkDelete = () => {
     if (selectedIds.length === 0) return;
-    
-    const confirmMessage = `Hapus ${selectedIds.length} item yang dipilih?`;
-    if (window.confirm(confirmMessage)) {
+
       onBulkDelete?.(selectedIds);
-      setSelectedIds([]);
-    }
   };
 
   if (data.length === 0) {
