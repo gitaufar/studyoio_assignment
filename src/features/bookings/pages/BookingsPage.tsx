@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useBookingStore } from "../store/bookingStore";
 import { useNetworkStatus } from "../../../shared/hooks/useNetworkStatus";
@@ -21,10 +21,15 @@ import { usePagination } from "../../../shared/hooks/usePagination";
 export const BookingsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   // Remove fetchBookings - data now comes from real-time subscription in App.tsx
-  const { bookings, loading, deleteBooking } = useBookingStore();
+  const { bookings, loading, deleteBooking, subscribeBookings } = useBookingStore();
   const { isOnline } = useNetworkStatus();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | undefined>();
+
+  // Ensure subscription is active when component mounts
+  useEffect(() => {
+    subscribeBookings();
+  }, [subscribeBookings]);
 
   // Modal states
   const [confirmDelete, setConfirmDelete] = useState<{

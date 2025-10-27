@@ -5,17 +5,23 @@ import { AppRoutes } from './core/routes';
 import { useFirebaseSync } from './shared/hooks/useFirebaseSync';
 import { NetworkStatus } from './shared/components/NetworkStatus';
 
-function App() {
-  // Initialize Firebase real-time sync (once on app mount)
+// Component that uses Firebase sync inside UserProvider
+function AppContent() {
   useFirebaseSync();
+  
+  return (
+    <Router>
+      <NetworkStatus />
+      <AppRoutes />
+    </Router>
+  );
+}
 
+function App() {
   return (
     <ThemeProvider>
       <UserProvider>
-        <Router>
-          <NetworkStatus />
-          <AppRoutes />
-        </Router>
+        <AppContent />
       </UserProvider>
     </ThemeProvider>
   );

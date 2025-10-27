@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTutorStore } from "../store/tutorStore";
 import { useNetworkStatus } from "../../../shared/hooks/useNetworkStatus";
@@ -20,10 +20,15 @@ import { usePagination } from "../../../shared/hooks/usePagination";
 
 export const TutorsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { tutors, loading, deleteTutor } = useTutorStore();
+  const { tutors, loading, deleteTutor, subscribeTutors } = useTutorStore();
   const { isOnline } = useNetworkStatus();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTutor, setSelectedTutor] = useState<Tutor | undefined>();
+
+  // Ensure subscription is active when component mounts
+  useEffect(() => {
+    subscribeTutors();
+  }, [subscribeTutors]);
 
   // Modal states
   const [confirmDelete, setConfirmDelete] = useState<{

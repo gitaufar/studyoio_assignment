@@ -1,26 +1,32 @@
 import { useEffect } from 'react';
 import { useTutorStore } from '../../features/tutors/store/tutorStore';
 import { useBookingStore } from '../../features/bookings/store/bookingStore';
+import { useUserContext } from '../stores/userContext';
 
 
 export const useFirebaseSync = () => {
-  const subscribeTutors = useTutorStore((state) => state.subscribeTutors);
-  const unsubscribeTutors = useTutorStore((state) => state.unsubscribeTutors);
-  
-  const subscribeBookings = useBookingStore((state) => state.subscribeBookings);
-  const unsubscribeBookings = useBookingStore((state) => state.unsubscribeBookings);
+  const { user } = useUserContext();
 
   useEffect(() => {
+    // Only subscribe when user is logged in
+    if (!user) {
+      return;
+    }
+
+    // Get store methods directly
+    const { subscribeTutors, unsubscribeTutors } = useTutorStore.getState();
+    const { subscribeBookings, unsubscribeBookings } = useBookingStore.getState();
+
     // Start subscriptions
     subscribeTutors();
     subscribeBookings();
 
-    // Cleanup on unmount
+    // Cleanup on unmount or when user changes
     return () => {
       unsubscribeTutors();
       unsubscribeBookings();
     };
-  }, []); // Empty dependency array - run once on mount
+  }, [user]); // Re-subscribe when user changes
 
   return null;
 };
